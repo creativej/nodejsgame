@@ -1,0 +1,1477 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"auto",
+				"autoPlay"
+			],
+			[
+				"find_",
+				"find_by_key"
+			],
+			[
+				"pos",
+				"position:absolute"
+			],
+			[
+				"image_",
+				"image_url"
+			],
+			[
+				"scrollT",
+				"scrollToModal"
+			],
+			[
+				"meta",
+				"meta_title"
+			],
+			[
+				"list",
+				"list-style"
+			],
+			[
+				"list-",
+				"list-style-type"
+			],
+			[
+				"disp",
+				"display"
+			],
+			[
+				"mini",
+				"minimal"
+			],
+			[
+				"dis",
+				"display"
+			],
+			[
+				"gra",
+				"granularity"
+			],
+			[
+				"class",
+				"classmethod"
+			],
+			[
+				"occ",
+				"occurrences"
+			],
+			[
+				"occurr",
+				"occurrences"
+			],
+			[
+				"el",
+				"ellipsis"
+			],
+			[
+				"datetim",
+				"datetime_to_timestamp	(local, function)"
+			],
+			[
+				"occu",
+				"occurrences	(local, instance)"
+			],
+			[
+				"render",
+				"renderChart"
+			],
+			[
+				"oc",
+				"occurrences"
+			],
+			[
+				"queryset",
+				"queryset"
+			],
+			[
+				"gran",
+				"granularity	(local, instance)"
+			],
+			[
+				"time",
+				"timestamp"
+			],
+			[
+				"occur",
+				"occurrences"
+			],
+			[
+				"insert_",
+				"insert_occurrence"
+			],
+			[
+				"tu",
+				"timetuple"
+			],
+			[
+				"from",
+				"fromtimestamp"
+			],
+			[
+				"get_",
+				"get_hourly_occurrences"
+			],
+			[
+				"ear",
+				"earliest	(local, instance)"
+			],
+			[
+				"record",
+				"record_list	(local, instance)"
+			],
+			[
+				"dail",
+				"daily_occurrence	(local, instance)"
+			],
+			[
+				"hour",
+				"hours	(local, instance)"
+			],
+			[
+				"date",
+				"datetime"
+			],
+			[
+				"Hourly",
+				"HourlyOccurrences"
+			],
+			[
+				"clss",
+				"classmethod	(builtin, class)"
+			],
+			[
+				"try",
+				"try	Try/Except"
+			],
+			[
+				"Hour",
+				"HourlyOccurences"
+			],
+			[
+				"prev",
+				"prev_date"
+			],
+			[
+				"cur",
+				"current_date"
+			],
+			[
+				"hourly",
+				"hourly_occurences"
+			],
+			[
+				"for",
+				"for	for (…) {…}"
+			],
+			[
+				"insta",
+				"instance	(local, instance)"
+			],
+			[
+				"redu",
+				"reduce_func"
+			],
+			[
+				"clas",
+				"classmethod	(builtin, class)"
+			],
+			[
+				"get_hour",
+				"get_hourly_occurrence"
+			],
+			[
+				"o",
+				"occurences"
+			],
+			[
+				"Ho",
+				"hourlyGraph"
+			],
+			[
+				"exce",
+				"exception	(local, instance)"
+			],
+			[
+				"excep",
+				"exception"
+			],
+			[
+				"inline",
+				"inline-block"
+			],
+			[
+				"type",
+				"list-style-type"
+			],
+			[
+				"href",
+				"newHref"
+			],
+			[
+				"route",
+				"route_url"
+			],
+			[
+				"sear",
+				"search_terms"
+			],
+			[
+				"_",
+				"_format_backtrace"
+			],
+			[
+				"sta",
+				"stacktrace"
+			],
+			[
+				"exec",
+				"executeRequest"
+			],
+			[
+				"a",
+				"a: <a>"
+			],
+			[
+				"html",
+				"html: html"
+			],
+			[
+				"form",
+				"form: <form>"
+			],
+			[
+				"substr",
+				"substr"
+			],
+			[
+				"sub",
+				"substr"
+			],
+			[
+				"strle",
+				"strlen"
+			],
+			[
+				"lorem",
+				"lorem: lorem - Medium paragraph <p>"
+			],
+			[
+				"con",
+				"contestHelpComponent"
+			],
+			[
+				"contest",
+				"contestHelpComponent"
+			],
+			[
+				"mo",
+				"modules"
+			],
+			[
+				"ol",
+				"ol: <ol>"
+			],
+			[
+				"get_defin",
+				"get_defined_vars"
+			],
+			[
+				"he",
+				"height"
+			],
+			[
+				"comp",
+				"component"
+			],
+			[
+				"reset",
+				"reset"
+			],
+			[
+				"strlo",
+				"strtolower"
+			],
+			[
+				"str_re",
+				"str_replace"
+			],
+			[
+				"array_file",
+				"array_filter"
+			],
+			[
+				"Contests_",
+				"Contests_ContestHelp_ContestHelpFactorySystemTest"
+			],
+			[
+				"background",
+				"background: background-attachment: scroll/fixed"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "/Users/jamison/homedropbox/Dropbox/websites/remotebrowsers/client/source/layouts/layout.erb",
+			"settings":
+			{
+				"buffer_size": 401,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "init.js",
+			"settings":
+			{
+				"buffer_size": 2016,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Users/jamison/homedropbox/Dropbox/websites/remotebrowsers/client/source/javascripts/all.js",
+			"settings":
+			{
+				"buffer_size": 204,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Users/jamison/homedropbox/Dropbox/websites/remotebrowsers/client/source/index.html.erb",
+			"settings":
+			{
+				"buffer_size": 628,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Users/jamison/homedropbox/Dropbox/websites/remotebrowsers/client/source/stylesheets/all.css",
+			"settings":
+			{
+				"buffer_size": 2124,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "Packages/JavaScript/jsl/JavaScript (OSX).sublime-build",
+	"command_palette":
+	{
+		"height": 392.0,
+		"selected_items":
+		[
+			[
+				"repl",
+				"SublimeREPL: Shell"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"read",
+				"ReadmePlease"
+			],
+			[
+				"terminal",
+				"Preferences: Terminal Settings – User"
+			],
+			[
+				"package",
+				"Package Control: Remove Package"
+			],
+			[
+				"pack",
+				"Package Control: List Packages"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"pac",
+				"Package Control: Install Package"
+			],
+			[
+				"oack",
+				"Package Control: List Packages"
+			],
+			[
+				"server",
+				"File: Open In Browser - Testing Server"
+			],
+			[
+				"git",
+				"Git: Status"
+			],
+			[
+				"git sta",
+				"Git: Status"
+			],
+			[
+				"dis",
+				"Package Control: Discover Packages"
+			],
+			[
+				"ctag",
+				"CTags: Rebuild Tags"
+			],
+			[
+				"enable",
+				"Package Control: Enable Package"
+			],
+			[
+				"",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 530.0
+	},
+	"console":
+	{
+		"height": 170.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": true,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/Users/jamison/homedropbox/Dropbox/websites/remotebrowsers/client/source/javascripts/app/characters.js",
+		"/Users/jamison/homedropbox/Dropbox/websites/remotebrowsers/client/source/javascripts/app/characters",
+		"/Users/jamison/homedropbox/Dropbox/projects/ebutuvideos/app/views/layouts/blank.html.erb",
+		"/Users/jamison/Library/Application Support/Sublime Text 2/Packages/MacTerminal/README.md",
+		"/Users/jamison/Library/Application Support/Sublime Text 2/Packages/User/Terminal.sublime-settings",
+		"/Users/jamison/projects/canvas/index.html",
+		"/Users/jamison/homedropbox/Dropbox/projects/ebutuvideos/app/views/layouts/experiment.html.erb",
+		"/Users/jamison/homedropbox/Dropbox/projects/ebutuvideos/app/views/website/test.html.erb",
+		"/Users/jamison/homedropbox/Dropbox/projects/ebutuvideos/app/assets/stylesheets/experiment/test.css.scss",
+		"/Users/jamison/homedropbox/Dropbox/projects/ebutuvideos/config/routes.rb",
+		"/Users/jamison/homedropbox/Dropbox/projects/ebutuvideos/app/assets/stylesheets/test/test.css.scss",
+		"/Users/jamison/homedropbox/Dropbox/projects/ebutuvideos/app/controllers/test_controller.rb",
+		"/Users/jamison/homedropbox/Dropbox/projects/ebutuvideos/app/assets/stylesheets/website/_test.css.scss",
+		"/Users/jamison/homedropbox/Dropbox/projects/ebutuvideos/app/assets/stylesheets/website/test.css.scss",
+		"/Users/jamison/homedropbox/Dropbox/projects/ebutuvideos/app/views/layouts/admin.html.erb",
+		"/Users/jamison/homedropbox/Dropbox/projects/ebutuvideos/app/assets/stylesheets/website/test.html.erb",
+		"/Users/jamison/homedropbox/Dropbox/projects/ebutuvideos/app/controllers/website_controller.rb",
+		"/Users/jamison/homedropbox/Dropbox/projects/ebutuvideos/vendor/assets/javascripts/jquery.pageless.js",
+		"/Users/jamison/homedropbox/Dropbox/projects/ebutuvideos/app/assets/javascripts/website/components/pageless-videos.js",
+		"/Users/jamison/homedropbox/Dropbox/projects/ebutuvideos/app/views/videos/index.html.erb",
+		"/Users/jamison/homedropbox/Dropbox/projects/ebutuvideos/app/controllers/videos_controller.rb",
+		"/Users/jamison/homedropbox/Dropbox/projects/ebutuvideos/app/helpers/website_helper.rb",
+		"/Users/jamison/homedropbox/Dropbox/projects/ebutuvideos/app/views/layouts/website.html.erb",
+		"/Users/jamison/homedropbox/Dropbox/projects/ebutuvideos/app/models/category.rb",
+		"/Users/jamison/homedropbox/Dropbox/projects/ebutuvideos/Gemfile",
+		"/Users/jamison/homedropbox/Dropbox/projects/ebutuvideos/spec/requests/websites_spec.rb",
+		"/Users/jamison/homedropbox/Dropbox/projects/ebutuvideos/spec/factories.rb",
+		"/Users/jamison/homedropbox/Dropbox/projects/ebutuvideos/spec/spec_helper.rb",
+		"/Users/jamison/homedropbox/Dropbox/projects/ebutuvideos/app/views/index.html.erb",
+		"/Users/jamison/homedropbox/Dropbox/projects/ebutuvideos/config/initializers/kaminari_config.rb",
+		"/Users/jamison/homedropbox/Dropbox/projects/ebutuvideos/config/environments/production.rb",
+		"/Users/jamison/homedropbox/Dropbox/projects/ebutuvideos/app/views/videos/_videos.html.erb",
+		"/Users/jamison/homedropbox/Dropbox/projects/ebutuvideos/app/views/website/_videos.html.erb",
+		"/Users/jamison/homedropbox/Dropbox/projects/ebutuvideos/app/views/admin/videos/index.html.erb",
+		"/Users/jamison/homedropbox/Dropbox/projects/ebutuvideos/app/assets/javascripts/website/components/videos-nav.js",
+		"/Users/jamison/homedropbox/Dropbox/projects/ebutuvideos/app/assets/javascripts/website/components/youtube-player.js",
+		"/Users/jamison/homedropbox/Dropbox/projects/ebutuvideos/app/assets/javascripts/website/components/video-list.js",
+		"/Users/jamison/homedropbox/Dropbox/projects/ebutuvideos/app/views/videos/_video_item.html.erb",
+		"/Users/jamison/homedropbox/Dropbox/projects/ebutuvideos/app/views/website/_video_item.html.erb",
+		"/Users/jamison/homedropbox/Dropbox/projects/ebutuvideos/app/views/website/video.html.erb",
+		"/Users/jamison/homedropbox/Dropbox/projects/ebutuvideos/app/assets/stylesheets/website/_header.css.scss",
+		"/Users/jamison/homedropbox/Dropbox/projects/ebutuvideos/vendor/assets/javascripts/history.adapter.jquery.js",
+		"/Users/jamison/homedropbox/Dropbox/projects/ebutuvideos/app/assets/stylesheets/website.css.scss",
+		"/Users/jamison/homedropbox/Dropbox/projects/ebutuvideos/app/views/website/videos.html.erb",
+		"/Users/jamison/homedropbox/Dropbox/projects/ebutuvideos/app/views/website/_header.html.erb",
+		"/Users/jamison/homedropbox/Dropbox/projects/ebutuvideos/app/models/video.rb",
+		"/Users/jamison/homedropbox/Dropbox/projects/ebutuvideos/app/assets/stylesheets/website/_videos.css.scss",
+		"/Users/jamison/homedropbox/Dropbox/projects/ebutuvideos/app/assets/javascripts/website/components/pjax-spinner.js",
+		"/Users/jamison/homedropbox/Dropbox/projects/ebutuvideos/app/assets/javascripts/website.js",
+		"/Users/jamison/homedropbox/Dropbox/projects/ebutuvideos/vendor/assets/javascripts/history.js",
+		"/Users/jamison/homedropbox/Dropbox/projects/ebutuvideos/app/assets/stylesheets/website/_variables.css.scss",
+		"/Users/jamison/homedropbox/Dropbox/projects/ebutuvideos/config.ru",
+		"/Users/jamison/homedropbox/Dropbox/projects/ebutuvideos/db/migrate/20120930001527_add_featured_to_categories.rb",
+		"/Users/jamison/homedropbox/Dropbox/projects/ebutuvideos/app/controllers/admin/videos_controller.rb",
+		"/Users/jamison/homedropbox/Dropbox/projects/ebutuvideos/db/schema.rb",
+		"/Users/jamison/homedropbox/Dropbox/projects/ebutuvideos/config/application.rb",
+		"/Users/jamison/homedropbox/Dropbox/projects/ebutuvideos/app/assets/stylesheets/website/_video.css.scss",
+		"/Users/jamison/homedropbox/Dropbox/projects/ebutuvideos/app/controllers/admin_controller.rb",
+		"/Users/jamison/projects/triage/triage/templates/errors/sparkline.html",
+		"/Users/jamison/projects/triage/triage/static/css/style.css",
+		"/Users/jamison/projects/triage/triage/static/js/application.js",
+		"/Users/jamison/projects/triage/triage/static/js/triage.js",
+		"/Users/jamison/projects/triage/triage/static/js/modules/graph.js",
+		"/Users/jamison/projects/triage/triage/routes.py",
+		"/Users/jamison/projects/triage/triage/views/error.py",
+		"/Users/jamison/projects/triage/triage/models/project.py",
+		"/Users/jamison/projects/triage/triage/static/js/jquery-mousewheel.js",
+		"/Users/jamison/projects/triage/triage/templates/layout/base.html",
+		"/Users/jamison/projects/triage/triage/templates/error-view/generic.html",
+		"/Users/jamison/projects/triage/triage/templates/error-graph.html",
+		"/Users/jamison/projects/triage/triage/static/js/jquery-cookie.min.js",
+		"/Users/jamison/projects/triage/triage/templates/error-list.html",
+		"/Users/jamison/projects/triage/triage/templates/errors/row.html",
+		"/Users/jamison/projects/triage/triage/static/js/modules/sparkline.js",
+		"/Users/jamison/projects/triage/env/lib/python2.7/site-packages/pytz-2012d-py2.7.egg/pytz/zoneinfo/Europe/Stockholm",
+		"/Users/jamison/projects/triage/triage/templates/admin/users/create.html",
+		"/Users/jamison/projects/triage/triage/models/error.py",
+		"/Users/jamison/projects/triage/triage/models/__init__.py",
+		"/Users/jamison/projects/triage/triage/api.py",
+		"/Users/jamison/projects/triage/triage/models/hourly_occurrence.py",
+		"/Users/jamison/projects/triage/triage/models/daily_occurrence.py",
+		"/Users/jamison/projects/triage/mongo/occurences_migration.js",
+		"/Users/jamison/projects/triage/triage/models/base_occurrence.py",
+		"/Users/jamison/projects/triage/triage/util.py",
+		"/Users/jamison/projects/triage/triage/models.pyc",
+		"/Users/jamison/projects/triage/triage/models.py",
+		"/Users/jamison/projects/triage/triage/models/error_hasher.py",
+		"/Users/jamison/projects/triage/triage/models/BaseOccurrences.py",
+		"/Users/jamison/projects/triage/triage/models/daily_occurrences.py",
+		"/Users/jamison/projects/triage/triage/models/hourly_occurrences.py",
+		"/Users/jamison/Downloads/Highcharts-2.3.0/js/highcharts.js",
+		"/Users/jamison/projects/triage/triage/static/js/highcharts.js",
+		"/Users/jamison/projects/triage/triage/static/js/modules/error-list.js",
+		"/Users/jamison/projects/triage/clients/js/js/triage-client.js",
+		"/Users/jamison/projects/triage/triage/models/user.py",
+		"/Users/jamison/projects/triage/triage/models/error_instance.py",
+		"/Users/jamison/projects/triage/triage/views/admin.py",
+		"/Users/jamison/projects/triage/triage/views/api.py",
+		"/Users/jamison/projects/triage/triage/models/project_version.py",
+		"/Users/jamison/projects/triage/triage/views/user.py",
+		"/Users/jamison/projects/triage/triage/subscribers.py",
+		"/Users/jamison/projects/triage/triage/forms.py",
+		"/Users/jamison/projects/triage/triage/models/comment.py",
+		"/Users/jamison/projects/triage/triage/models/tag.py",
+		"/Users/jamison/projects/triage/triage/models/error_hash.py",
+		"/Users/jamison/projects/triage/triage/models2/daily_occurrences.py",
+		"/Users/jamison/projects/triage/triage/models2/hourly_occurrences.py",
+		"/Users/jamison/projects/triage/triage/models_.py",
+		"/Users/jamison/projects/triage/triage/models/__init.__.py",
+		"/Users/jamison/projects/triage/triage/templates/layout/page.html",
+		"/Users/jamison/projects/triage/triage/static/js/highcharts-modules-exporting.js",
+		"/Users/jamison/projects/triage/triage/static/js/jquery.sparkline.min.js",
+		"/Users/jamison/projects/triage/clients/js/index.html",
+		"/Users/jamison/projects/triage/triage/static/js/modules/chart.js",
+		"/Users/jamison/projects/triage/triage/templates/errors/list.html",
+		"/Users/jamison/projects/triage/development.ini",
+		"/Users/jamison/projects/triage/triage/static/js/modules/error-nav.js",
+		"/Users/jamison/projects/triage/triage/filters.py",
+		"/Users/jamison/projects/triage/production.ini",
+		"/Users/jamison/projects/triage/setup.py",
+		"/Users/jamison/projects/triage/triage/static/js/googlechart.js",
+		"/Users/jamison/projects/triage/triage/static/js/moment.js",
+		"/Users/jamison/projects/triage/triage/static/js/modules/highchart.js",
+		"/Users/jamison/projects/triage/env/lib/python2.6/site-packages/pyramid-1.2.1-py2.6.egg/pyramid/view.py",
+		"/Users/jamison/projects/triage/mongo/mapreduce_occurrences.js",
+		"/Users/jamison/projects/triagelogger/trilog.py",
+		"/Users/jamison/sublime/contests.sublime-project",
+		"/Users/jamison/projects/triage/triage/settings.py"
+	],
+	"find":
+	{
+		"height": 37.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+			"<project>",
+			"",
+			"/Users/jamison/projects/triage/clients/js"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"bmpAnimation",
+			"    ",
+			"resource",
+			"test",
+			"video-item",
+			"videos",
+			"'page.change'",
+			"stopVideo",
+			"'video.stop'",
+			"mainUrl",
+			"activateSubNav",
+			"cachedPosition",
+			".on",
+			"bindVideoEvents",
+			"displayVideoHrefs",
+			"mainUrl",
+			"pjax:afterSend",
+			"console.log",
+			"displayVideoHrefs",
+			"raw",
+			"video_item",
+			"_video_item",
+			"24",
+			"pageless-spinner",
+			"pageless",
+			"hideModal",
+			"host",
+			"console.log",
+			".watermar",
+			".error-ac",
+			".pane",
+			"$pane",
+			"pane",
+			"$pane",
+			"error-ac",
+			"loadError",
+			"showPane",
+			"$body.scrollTop()",
+			"$row.offset().top",
+			"$('body')",
+			"error-active",
+			"selected",
+			"viewed",
+			"readyToShow",
+			"show",
+			"updateTabPane",
+			"error.viewed",
+			"'error.viewed'",
+			"selectTab",
+			"updateTabPane",
+			"loadError",
+			"selectTab",
+			"updateTabPane",
+			"changeSelection",
+			"('.pane",
+			"changeSelection",
+			"offset",
+			"error.viewed",
+			"removeClass",
+			"hide",
+			".pane",
+			"fadeOut",
+			"fade",
+			"error-active",
+			"active",
+			"$('.pane')",
+			"occurances",
+			" widli=",
+			"li class",
+			"td",
+			"div",
+			"th",
+			"thead",
+			"switchCl",
+			"error.viewed",
+			"height",
+			".pane",
+			"all",
+			"width",
+			"2s",
+			"active",
+			".watermark",
+			".tab-cont",
+			"loadError",
+			"graph",
+			"error_view",
+			"pane-view",
+			"pane",
+			"tab-c",
+			"heading",
+			"inner",
+			"innerpane",
+			"selectTab",
+			"$(this)",
+			".nav-tabs",
+			".nav-tab",
+			"$(document)",
+			"tab-con",
+			"pane-actions",
+			"nav-tab",
+			"pane-ac",
+			"pane",
+			"error-list",
+			"pane-con",
+			"$row",
+			"tabs-below",
+			"pane",
+			"scroll",
+			"$error",
+			"errorlist.selection.changed",
+			"occurances",
+			"occurrenc",
+			"selected_project",
+			"def get_err",
+			"timefirst",
+			"get_errors",
+			"timefirst",
+			"type",
+			"StringField",
+			"ccurrences",
+			"HourlyOccurrences",
+			"keyword_re",
+			"datetime.datetime",
+			"datetime",
+			"keyword_re",
+			"datetime",
+			"time.",
+			"block footer"
+		],
+		"highlight": false,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"_addNewDesigner",
+			"_addNewEntry",
+			"shortlist",
+			"unShortlist",
+			".contest-shortlist-component",
+			".contest",
+			"Ergo::router()->buildUrl('help.view', array('helptoken' =>'$1'))",
+			"Ergo::router()->buildUrl('help.view', array('$1'))",
+			"self",
+			"target=\"_new\" href"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "/Users/jamison/homedropbox/Dropbox/websites/remotebrowsers/client/source/layouts/layout.erb",
+					"settings":
+					{
+						"buffer_size": 401,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								47,
+								47
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Rails/HTML (Rails).tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "init.js",
+					"settings":
+					{
+						"buffer_size": 2016,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								874,
+								874
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/Users/jamison/homedropbox/Dropbox/websites/remotebrowsers/client/source/javascripts/all.js",
+					"settings":
+					{
+						"buffer_size": 204,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								182,
+								182
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "/Users/jamison/homedropbox/Dropbox/websites/remotebrowsers/client/source/index.html.erb",
+					"settings":
+					{
+						"buffer_size": 628,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								593,
+								593
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Rails/HTML (Rails).tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "/Users/jamison/homedropbox/Dropbox/websites/remotebrowsers/client/source/stylesheets/all.css",
+					"settings":
+					{
+						"buffer_size": 2124,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2119,
+								2119
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/CSS/CSS.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1612.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 34.0
+	},
+	"input":
+	{
+		"height": 27.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 100.0
+	},
+	"output.jsconsole_view":
+	{
+		"height": 0.0
+	},
+	"output.jshint_view":
+	{
+		"height": 0.0
+	},
+	"replace":
+	{
+		"height": 62.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"blank",
+				"app/views/layouts/blank.html.erb"
+			],
+			[
+				"routes",
+				"config/routes.rb"
+			],
+			[
+				"admin",
+				"app/views/layouts/admin.html.erb"
+			],
+			[
+				"website",
+				"app/controllers/website_controller.rb"
+			],
+			[
+				"websitecon",
+				"app/controllers/website_controller.rb"
+			],
+			[
+				"website.html",
+				"app/views/layouts/website.html.erb"
+			],
+			[
+				"pageless",
+				"vendor/assets/javascripts/jquery.pageless.js"
+			],
+			[
+				"pageles",
+				"app/assets/javascripts/website/components/pageless-videos.js"
+			],
+			[
+				"index.",
+				"app/views/videos/index.html.erb"
+			],
+			[
+				"videosco",
+				"app/controllers/videos_controller.rb"
+			],
+			[
+				"websitehelp",
+				"app/helpers/website_helper.rb"
+			],
+			[
+				"category",
+				"app/models/category.rb"
+			],
+			[
+				"website_spec",
+				"spec/requests/websites_spec.rb"
+			],
+			[
+				"gemf",
+				"Gemfile"
+			],
+			[
+				"_head",
+				"app/views/website/_header.html.erb"
+			],
+			[
+				"_videos",
+				"app/views/website/_videos.html.erb"
+			],
+			[
+				"_video",
+				"app/views/videos/_video_item.html.erb"
+			],
+			[
+				"video",
+				"app/models/video.rb"
+			],
+			[
+				"websi",
+				"app/controllers/website_controller.rb"
+			],
+			[
+				"kam",
+				"config/initializers/kaminari_config.rb"
+			],
+			[
+				"gem",
+				"Gemfile"
+			],
+			[
+				"videos",
+				"app/views/website/videos.html.erb"
+			],
+			[
+				"pro",
+				"config/environments/production.rb"
+			],
+			[
+				"produ",
+				"config/environments/production.rb"
+			],
+			[
+				"video_ite",
+				"app/views/website/_video_item.html.erb"
+			],
+			[
+				"youtube",
+				"app/assets/javascripts/website/components/youtube-player.js"
+			],
+			[
+				"video-li",
+				"app/assets/javascripts/website/components/video-list.js"
+			],
+			[
+				"adminvideos.html",
+				"app/views/admin/videos/index.html.erb"
+			],
+			[
+				"player",
+				"app/assets/javascripts/website/components/youtube-player.js"
+			],
+			[
+				"video-nav",
+				"app/assets/javascripts/website/components/videos-nav.js"
+			],
+			[
+				"websitec",
+				"app/controllers/website_controller.rb"
+			],
+			[
+				"pagelo",
+				"app/assets/javascripts/website/components/pageless-videos.js"
+			],
+			[
+				"_hea",
+				"app/views/website/_header.html.erb"
+			],
+			[
+				"videolist",
+				"app/assets/javascripts/website/components/video-list.js"
+			],
+			[
+				"navjs",
+				"app/assets/javascripts/website/components/videos-nav.js"
+			],
+			[
+				"item",
+				"app/views/website/_video_item.html.erb"
+			],
+			[
+				"pja",
+				"app/assets/javascripts/website/components/pjax-spinner.js"
+			],
+			[
+				"videonav",
+				"app/assets/javascripts/website/components/videos-nav.js"
+			],
+			[
+				"websit",
+				"app/controllers/website_controller.rb"
+			],
+			[
+				"website.js",
+				"app/assets/javascripts/website.js"
+			],
+			[
+				"histor",
+				"vendor/assets/javascripts/history.js"
+			],
+			[
+				"header",
+				"app/views/website/_header.html.erb"
+			],
+			[
+				"videos.html.er",
+				"app/views/website/videos.html.erb"
+			],
+			[
+				"vidoli",
+				"app/assets/javascripts/website/components/video-list.js"
+			],
+			[
+				"video_item",
+				"app/views/website/_video_item.html.erb"
+			],
+			[
+				"videoitem",
+				"app/views/website/_video_item.html.erb"
+			],
+			[
+				"videoie",
+				"app/views/website/_video_item.html.erb"
+			],
+			[
+				"_videoite",
+				"app/views/website/_video_item.html.erb"
+			],
+			[
+				"videos.html",
+				"app/views/website/videos.html.erb"
+			],
+			[
+				"websitesc",
+				"app/assets/stylesheets/website.css.scss"
+			],
+			[
+				"helper",
+				"app/helpers/website_helper.rb"
+			],
+			[
+				"websitehtml",
+				"app/views/layouts/website.html.erb"
+			],
+			[
+				"videolis",
+				"app/assets/javascripts/website/components/video-list.js"
+			],
+			[
+				"videojs",
+				"app/assets/javascripts/website/components/video-list.js"
+			],
+			[
+				"",
+				"app/assets/stylesheets/website.css.scss"
+			],
+			[
+				"schem",
+				"db/schema.rb"
+			],
+			[
+				"variables",
+				"app/assets/stylesheets/website/_variables.css.scss"
+			],
+			[
+				"head",
+				"app/assets/stylesheets/website/_header.css.scss"
+			],
+			[
+				"website.sc",
+				"app/assets/stylesheets/website.css.scss"
+			],
+			[
+				"_videoitem",
+				"app/views/website/_video_item.html.erb"
+			],
+			[
+				"schema",
+				"db/schema.rb"
+			],
+			[
+				"websiteco",
+				"app/controllers/website_controller.rb"
+			],
+			[
+				"videocontr",
+				"app/controllers/admin/videos_controller.rb"
+			],
+			[
+				"videocs",
+				"app/assets/stylesheets/website/_video.css.scss"
+			],
+			[
+				"websitecss",
+				"app/assets/stylesheets/website.css.scss"
+			],
+			[
+				"videocontro",
+				"app/controllers/admin/videos_controller.rb"
+			],
+			[
+				"admincon",
+				"app/controllers/admin_controller.rb"
+			],
+			[
+				"youtubeplay",
+				"app/assets/javascripts/website/components/youtube-player.js"
+			],
+			[
+				"layout/",
+				"app/views/layouts/website.html.erb"
+			],
+			[
+				"panej",
+				"triage/static/js/modules/pane.js"
+			],
+			[
+				"styles",
+				"triage/static/css/style.css"
+			],
+			[
+				"application.",
+				"triage/static/js/application.js"
+			],
+			[
+				"pane",
+				"triage/static/js/modules/pane.js"
+			],
+			[
+				"jqueryui",
+				"triage/static/js/jquery-ui-1.8.12.min.js"
+			],
+			[
+				"gener",
+				"triage/templates/error-view/generic.html"
+			],
+			[
+				"spar",
+				"triage/templates/errors/sparkline.html"
+			],
+			[
+				"generic.h",
+				"triage/templates/error-view/generic.html"
+			],
+			[
+				"row",
+				"triage/templates/errors/row.html"
+			],
+			[
+				"errorgraph",
+				"triage/templates/error-graph.html"
+			],
+			[
+				"graph",
+				"triage/static/js/modules/graph.js"
+			],
+			[
+				"errorgr",
+				"triage/templates/error-graph.html"
+			],
+			[
+				"viewerror",
+				"triage/views/error.py"
+			],
+			[
+				"project.py",
+				"triage/models/project.py"
+			],
+			[
+				"css",
+				"triage/static/css/style.css"
+			],
+			[
+				"sparkl",
+				"triage/static/js/modules/sparkline.js"
+			],
+			[
+				"errors.html",
+				"triage/templates/error-list.html"
+			],
+			[
+				"error",
+				"triage/models/error.py"
+			],
+			[
+				"project",
+				"triage/models/project.py"
+			],
+			[
+				"util",
+				"triage/util.py"
+			],
+			[
+				"error.",
+				"triage/views/error.py"
+			],
+			[
+				"mode",
+				"triage/models.py"
+			],
+			[
+				"style.c",
+				"triage/static/css/style.css"
+			],
+			[
+				"base",
+				"triage/models/base_occurrence.py"
+			],
+			[
+				"erro",
+				"triage/models/error.py"
+			],
+			[
+				"model",
+				"triage/models.py"
+			],
+			[
+				"migra",
+				"mongo/occurences_migration.js"
+			],
+			[
+				"error.py",
+				"triage/views/error.py"
+			],
+			[
+				"baseoc",
+				"triage/models/base_occurrence.py"
+			],
+			[
+				"api",
+				"triage/api.py"
+			],
+			[
+				"hour",
+				"triage/models/hourly_occurrence.py"
+			],
+			[
+				"errorhas",
+				"triage/models/error_hasher.py"
+			],
+			[
+				"hourl",
+				"triage/models/hourly_occurrences.py"
+			],
+			[
+				"subs",
+				"triage/subscribers.py"
+			],
+			[
+				"user.py",
+				"triage/views/user.py"
+			],
+			[
+				"project_ver",
+				"triage/models/project_version.py"
+			],
+			[
+				"commen",
+				"triage/models/comment.py"
+			],
+			[
+				"admin.p",
+				"triage/views/admin.py"
+			],
+			[
+				"form",
+				"triage/forms.py"
+			],
+			[
+				"models",
+				"triage/models.py"
+			],
+			[
+				"page.h",
+				"triage/templates/layout/page.html"
+			],
+			[
+				"base.htm",
+				"triage/templates/layout/base.html"
+			],
+			[
+				"page",
+				"triage/templates/layout/page.html"
+			],
+			[
+				"errorlist",
+				"triage/static/js/modules/error-list.js"
+			],
+			[
+				"route",
+				"triage/routes.py"
+			],
+			[
+				"clie",
+				"clients/js/js/triage-client.js"
+			],
+			[
+				"spark",
+				"triage/static/js/modules/sparkline.js"
+			],
+			[
+				"charts",
+				"triage/static/js/modules/chart.js"
+			],
+			[
+				"char",
+				"triage/static/js/modules/chart.js"
+			],
+			[
+				"mod",
+				"triage/models.py"
+			],
+			[
+				"chart",
+				"triage/static/js/modules/chart.js"
+			],
+			[
+				"deve",
+				"development.ini"
+			],
+			[
+				"listjs",
+				"triage/static/js/modules/error-list.js"
+			],
+			[
+				"error.p",
+				"triage/views/error.py"
+			],
+			[
+				"uti",
+				"triage/util.py"
+			],
+			[
+				"filter",
+				"triage/filters.py"
+			],
+			[
+				"setup",
+				"setup.py"
+			],
+			[
+				"gra",
+				"triage/templates/error-graph.html"
+			],
+			[
+				"view.",
+				"env/lib/python2.6/site-packages/pyramid-1.2.1-py2.6.egg/pyramid/view.py"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"selected_items":
+		[
+			[
+				"",
+				"/Users/jamison/sublime/vagrant-contests.sublime-project"
+			]
+		],
+		"width": 380.0
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 240.0,
+	"status_bar_visible": true
+}
