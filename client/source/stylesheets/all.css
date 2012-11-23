@@ -142,7 +142,6 @@ form.playground .msg {
 }
 
 #canvas {
-  width: 400px;
-  height: 250px;
-  background-color: #000;
+  margin: 10px;
+  background-color: grey;
 }
