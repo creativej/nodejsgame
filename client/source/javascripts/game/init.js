@@ -8,6 +8,7 @@ var game = game || {};
 	game.init = function(canvas) {
 		this.canvas = canvas;
 		this.stage = new createjs.Stage(canvas);
+		this.stage.snapPixelsEnabled = true;
 		this.screenWidth = canvas.width;
 		this.screenHeight = canvas.height;
 
@@ -19,15 +20,15 @@ var game = game || {};
 	};
 
 	game.tick = function() {
-		this.runtime.player.tick();
-		this.runtime.enemy.tick();
-		this.debug('player x: ' + this.runtime.player.x, true);
-		this.debug('player y: ' + this.runtime.player.y);
-		this.debug('mouse x: ' + this.stage.mouseX);
-		this.debug('mouse y: ' + this.stage.mouseY);
-		this.debug('enemy y: ' + this.runtime.enemy.y);
+		// this.runtime.player.tick();
+		// this.runtime.enemy.tick();
+		// this.debug('player x: ' + this.runtime.player.x, true);
+		// this.debug('player y: ' + this.runtime.player.y);
+		// this.debug('mouse x: ' + this.stage.mouseX);
+		// this.debug('mouse y: ' + this.stage.mouseY);
+		// this.debug('enemy y: ' + this.runtime.enemy.y);
 
-		this.runtime.player.updateAim(this.stage.mouseX, this.stage.mouseY);
+		// this.runtime.player.updateAim(this.stage.mouseX, this.stage.mouseY);
 
 		// var point = this.runtime.player.globalLandingPoints();
 
@@ -47,29 +48,28 @@ var game = game || {};
 		$canvas.css('height', $canvas.prop('height'));
 		game.init($canvas.get(0));
 
-		var map = new game.Map(game.maps[0]);
+		// var map = new game.Map(game.maps[0]);
+		// game.runtime.map = map;
 
 		var player = new game.Player('player1', 'rgba(255,255,255,1)');
-
 		player.x = 200;
 		player.y = 100;
 		player.vY = 2;
-
-		player.setAimer(new game.Aimer());
+		console.log(player);
+		// player.setAimer(new game.Aimer());
 
 		game.runtime.player = player;
-		game.runtime.map = map;
 
-		$('body').on('click', function() {
-			player.fire(game.stage.mouseX, game.stage.mouseY);
-		});
+		// $('body').on('click', function() {
+		// 	player.fire(game.stage.mouseX, game.stage.mouseY);
+		// });
 
-		var enemy = new game.Enemy();
+		// var enemy = new game.Enemy();
 
-		enemy.x = 400;
-		enemy.y = 0;
-		game.runtime.enemy = enemy;
-		game.stage.addChild(enemy);
+		// enemy.x = 400;
+		// enemy.y = 0;
+		// game.runtime.enemy = enemy;
+		// game.stage.addChild(enemy);
 
 		// game.stage.onMouseMove(function(e) {
 		// 	console.log(e);
@@ -90,9 +90,14 @@ var game = game || {};
 
 		// container.y = 50;
 
-		game.stage.addChild(map);
+		var world = game.world(game.screenWidth, game.screenHeight);
+
+		world.addObject(player);
+
+		// game.stage.addChild(map);
 		game.stage.addChild(player);
 
+		createjs.Ticker.addListener(world);
 		createjs.Ticker.addListener(game);
 
 		// game.images = {};
@@ -117,4 +122,4 @@ var game = game || {};
 		// game.stage.addChild(starAnimation);
 		// game.stage.update();
 	});
-})(window, $, game, createjs);
+})(window, jQuery, game, createjs);

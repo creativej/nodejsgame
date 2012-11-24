@@ -15,4 +15,4 @@ var game = game || {};
 		}
 		$console.text($console.text() + text + '\n');
 	};
-})($);
+})(jQuery);

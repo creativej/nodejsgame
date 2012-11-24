@@ -1,11 +1,13 @@
-//= require libs/jquery-1.7.1.min
 //= require libs/sugar-1.3.6.min
+//= require libs/box2dweb-2.1a3
+//= require libs/jquery-1.7.1.min
 //= require app/helpers
 //= require app/user
 //= require app/users
 //= require app/room
 //= require_tree ./app/components/.
 //= require game/maps
+//= require game/world
 //= require game/map
 //= require game/debug
 //= require game/keystate
