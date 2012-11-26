@@ -3,7 +3,7 @@ var game = game || {};
 (function(window, $, game, createjs) {
 	'use strict';
 
-	var player;
+	game.runtime = {};
 
 	game.init = function(canvas) {
 		this.canvas = canvas;
@@ -19,7 +19,23 @@ var game = game || {};
 	};
 
 	game.tick = function() {
-		player.tick();
+		this.runtime.player.tick();
+		this.runtime.enemy.tick();
+		this.debug('player x: ' + this.runtime.player.x, true);
+		this.debug('player y: ' + this.runtime.player.y);
+		this.debug('mouse x: ' + this.stage.mouseX);
+		this.debug('mouse y: ' + this.stage.mouseY);
+		this.debug('enemy y: ' + this.runtime.enemy.y);
+
+		this.runtime.player.updateAim(this.stage.mouseX, this.stage.mouseY);
+
+		// var point = this.runtime.player.globalLandingPoints();
+
+		// var localPoint = this.runtime.map.globalToLocal(point.x, point.y);
+
+		// if (this.helpers.hitTest(this.runtime.player, this.runtime.map)) {
+		// 	this.debug('HIT!!');
+		// }
 
 		// update the stage:
 		this.stage.update();
@@ -31,12 +47,34 @@ var game = game || {};
 		$canvas.css('height', $canvas.prop('height'));
 		game.init($canvas.get(0));
 
-		var map = game.helpers.generateMap(game.maps[0]);
+		var map = new game.Map(game.maps[0]);
 
-		player = new game.Player('player1', 'rgba(255,255,255,1)');
+		var player = new game.Player('player1', 'rgba(255,255,255,1)');
 
 		player.x = 200;
 		player.y = 100;
+		player.vY = 2;
+
+		player.setAimer(new game.Aimer());
+
+		game.runtime.player = player;
+		game.runtime.map = map;
+
+		$('body').on('click', function() {
+			player.fire(game.stage.mouseX, game.stage.mouseY);
+		});
+
+		var enemy = new game.Enemy();
+
+		enemy.x = 400;
+		enemy.y = 0;
+		game.runtime.enemy = enemy;
+		game.stage.addChild(enemy);
+
+		// game.stage.onMouseMove(function(e) {
+		// 	console.log(e);
+		// });
+
 		// var container = new createjs.Container();
 		// var rect = game.helpers.rect(50, 50, "rgba(255,255,255,1)");
 		// rect.x = 50;

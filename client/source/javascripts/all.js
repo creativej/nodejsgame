@@ -6,8 +6,13 @@
 //= require app/room
 //= require_tree ./app/components/.
 //= require game/maps
+//= require game/map
+//= require game/debug
 //= require game/keystate
+//= require game/aimer
+//= require game/bullet
 //= require game/player
+//= require game/enemy
 //= require game/helpers
 //= require game/init
 // require page/index

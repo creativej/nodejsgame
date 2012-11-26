@@ -9,30 +9,10 @@ var game = game || {};
 		return new createjs.Shape(new createjs.Graphics().beginFill(color).rect(0, 0, width, height));
 	};
 
-	game.helpers.generateMap = function(data) {
-		function tile(xStep, yStep, tWidth, tHeight) {
-			var	t = game.helpers.rect(tWidth, tHeight, "rgba(50,50,50,1)");
+	game.helpers.hitTest = function(obj, target) {
+		var objPoint = obj.localToGlobal();
+		var targetObjectPoint = target.globalToLocal(objPoint.x, objPoint.y);
 
-			t.x = xStep * tWidth;
-			t.y = yStep * tHeight;
-			return t;
-		}
-
-		var
-			tWidth = game.screenWidth/data[0].length,
-			tHeight = game.screenHeight/data.length,
-			map = new createjs.Container()
-			;
-
-
-		data.each(function(value, yStep) {
-			value.each(function(block, xStep) {
-				if (block === '#') {
-					map.addChild(tile(xStep, yStep, tWidth, tHeight));
-				}
-			});
-		});
-
-		return map;
-	};
+		return target.hitTest(targetObjectPoint.x, targetObjectPoint.y);
+	}
 })(window, game, createjs);
