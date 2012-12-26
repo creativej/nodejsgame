@@ -9,8 +9,8 @@ var game = game || {};
 		this.canvas = canvas;
 		this.stage = new createjs.Stage(canvas);
 		this.stage.snapPixelsEnabled = true;
-		this.screenWidth = canvas.width;
-		this.screenHeight = canvas.height;
+		this.screenWidth = parseInt(canvas.width, 10);
+		this.screenHeight = parseInt(canvas.height, 10);
 
 		createjs.Ticker.useRAF = true;
 		// Best Framerate targeted (60 FPS)
@@ -27,42 +27,98 @@ var game = game || {};
 		// this.debug('mouse x: ' + this.stage.mouseX);
 		// this.debug('mouse y: ' + this.stage.mouseY);
 		// this.debug('enemy y: ' + this.runtime.enemy.y);
+		var player = this.runtime.player;
 
-		// this.runtime.player.updateAim(this.stage.mouseX, this.stage.mouseY);
+		if (game.KeyState.isDown('a')) {
+			player.goingTo('move left');
+		}
+
+		if (game.KeyState.isDown('d')) {
+			player.goingTo('move right');
+		}
+
+		if (game.KeyState.isDown('w')) {
+			player.goingTo('jump');
+		}
+
+		if (
+			(!game.KeyState.isDown('a') && !game.KeyState.isDown('d')) ||
+			(!player.landed && player.blocked)
+		) {
+			player.goingTo('stop moving');
+		}
+
+		player.updateAim(this.stage.mouseX, this.stage.mouseY);
 
 		// var point = this.runtime.player.globalLandingPoints();
 
 		// var localPoint = this.runtime.map.globalToLocal(point.x, point.y);
 
 		// if (this.helpers.hitTest(this.runtime.player, this.runtime.map)) {
-		// 	this.debug('HIT!!');
+		//this.debug('HIT!!');
 		// }
 
 		// update the stage:
 		this.stage.update();
 	};
 
+	var file = (function() {
+		var result;
+		$.ajax({
+			type: "GET",
+			url: '/javascripts/map.txt',
+			async: false,
+			success: function(data){
+			    result = data;
+			}
+		});
+		return result;
+	})();
+
 	$(function() {
+		$(".toggle-debug").click(function() {
+			$('#debugCanvas').toggle();
+		});
+
+		$(".toggle-map").click(function() {
+			$('.map').toggle();
+		});
+
+		game.map = file.split('|\r\n');
 		var	$canvas = $("#canvas");
 		$canvas.css('width', $canvas.prop('width'));
 		$canvas.css('height', $canvas.prop('height'));
 		game.init($canvas.get(0));
 
+		var world = game.World(game.screenWidth, game.screenHeight);
+		game.world = world;
+
 		// var map = new game.Map(game.maps[0]);
 		// game.runtime.map = map;
 
-		var player = new game.Player('player1', 'rgba(255,255,255,1)');
-		player.x = 200;
+		var player = game.Player('player1', 'rgba(255,255,255,1)');
+		player.x = 300;
 		player.y = 100;
 		player.vY = 2;
-		console.log(player);
-		// player.setAimer(new game.Aimer());
-
+		player.setAimer(new game.Aimer());
+		game.stage.addChild(player);
 		game.runtime.player = player;
+		$('body').on('click', function() {
+			player.fire(game.stage.mouseX, game.stage.mouseY);
+		});
+		world.addObject(player);
 
-		// $('body').on('click', function() {
-		// 	player.fire(game.stage.mouseX, game.stage.mouseY);
-		// });
+		var enemy = game.Enemy('enemy1', 'rgba(0,0,255,1)');
+		enemy.x = 400;
+		enemy.y = 100;
+		enemy.vY = 2;
+		game.runtime.enemies = [];
+		game.runtime.enemies.push(enemy);
+
+		game.runtime.enemies.each(function(enemy) {
+			world.addObject(enemy);
+			game.stage.addChild(enemy);
+		});
 
 		// var enemy = new game.Enemy();
 
@@ -90,15 +146,44 @@ var game = game || {};
 
 		// container.y = 50;
 
-		var world = game.world(game.screenWidth, game.screenHeight);
+		world.addContactListener({
+			BeginContact: function(obj1, obj2) {
+				console.log('hit');
+				if (obj1.type === 'player' && obj2.type === 'tile') {
+					console.log(obj1);
+					// console.log(obj1);
+					// console.log(obj2);
+					// game.debug('obj2:' + Math.round(obj2.x + obj2.width), true);
+					// game.debug('obj1:' + Math.round(obj1.x - obj1.width/2));
+					// game.debug('obj2:' + Math.round(obj2.x), true);
+					// game.debug('obj1:' + Math.round(obj1.x + obj1.width/2));
+					if (
+						(Math.round(obj2.x + obj2.width) <= Math.round(obj1.x - obj1.width/2) ) ||
+						(Math.round(obj1.x + obj1.width/2 ) <= Math.round(obj2.x) )
+						) {
+						console.log('blocked');
+						obj1.blocked = true;
+					}
+				}
 
-		world.addObject(player);
+				if (obj1.type === 'bullet') {
+					obj1.destroy();
 
-		// game.stage.addChild(map);
-		game.stage.addChild(player);
+					if (obj2.isEnemy) {
+						obj2.hit();
+					}
+				}
+			},
+			EndContact: function(obj1, obj2) {
+				obj1.blocked = false;
+			}
+		});
+
+		game.stage.addChild(world.skin);
+
+		createjs.Ticker.addListener(game);
 
 		createjs.Ticker.addListener(world);
-		createjs.Ticker.addListener(game);
 
 		// game.images = {};
 		// game.images.star = image('/images/stars.png');

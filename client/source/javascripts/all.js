@@ -6,7 +6,11 @@
 //= require app/users
 //= require app/room
 //= require_tree ./app/components/.
+//= require mapeditor
+//= require game/global
+//= require game/helpers
 //= require game/maps
+//= require game/tile
 //= require game/world
 //= require game/map
 //= require game/debug
@@ -15,6 +19,5 @@
 //= require game/bullet
 //= require game/player
 //= require game/enemy
-//= require game/helpers
 //= require game/init
 // require page/index

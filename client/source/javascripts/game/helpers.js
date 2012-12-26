@@ -5,6 +5,14 @@ var game = game || {};
 
 	game.helpers = {};
 
+	game.helpers.meter = function(pixels) {
+		return pixels / 30;
+	};
+
+	game.helpers.pixel = function(meters) {
+		return meters * 30;
+	};
+
 	game.helpers.rect = function(width, height, color) {
 		return new createjs.Shape(new createjs.Graphics().beginFill(color).rect(0, 0, width, height));
 	};
