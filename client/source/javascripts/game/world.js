@@ -1,13 +1,8 @@
 var game = game || {};
 
 (function(game, Box2D) {
-	function meter(pixels) {
-		return pixels / 30;
-	}
-
-	function pixel(meters) {
-		return meters * 30;
-	}
+	var meter = game.helpers.meter;
+	var pixel = game.helpers.pixel;
 
 	// Box2d vars
 	var b2Vec2 = Box2D.Common.Math.b2Vec2;
@@ -17,66 +12,90 @@ var game = game || {};
 	var b2Fixture = Box2D.Dynamics.b2Fixture;
 	var b2World = Box2D.Dynamics.b2World;
 	var b2PolygonShape = Box2D.Collision.Shapes.b2PolygonShape;
+	var b2DebugDraw = Box2D.Dynamics.b2DebugDraw;
+
 	// var b2CircleShape = Box2D.Collision.Shapes.b2CircleShape;
 	// var b2DebugDraw = Box2D.Dynamics.b2DebugDraw;
 
 	// important box2d scale and speed vars
 	var STEP = 20, TIMESTEP = 1/STEP;
-
+	var debugContext;
 	var world;
 	var lastTimestamp = Date.now();
 	var fixedTimestepAccumulator = 0;
 	var bodiesToRemove = [];
 	var actors = [];
 	var objs = [];
+	var destroyQueue = [];
 
 	function createBoundaries(world, width, height) {
-		// boundaries - floor
-		var floorFixture = new b2FixtureDef;
-		floorFixture.density = 1;
-		floorFixture.restitution = 0;
-		floorFixture.shape = new b2PolygonShape;
-		floorFixture.shape.SetAsBox(meter(width), meter(10));
-		var floorBodyDef = new b2BodyDef;
-		floorBodyDef.type = b2Body.b2_staticBody;
-		floorBodyDef.position.x = meter(-25);
-		floorBodyDef.position.y = meter(height);
-		var floor = world.CreateBody(floorBodyDef);
-		floor.CreateFixture(floorFixture);
+		var
+			leftBoundary = game.Tile({
+				x: -10,
+				y: 0,
+				width: 10,
+				height: height
+			}).createBody(world),
+			rightBoundary = game.Tile({
+				x: width,
+				y: 0,
+				width: 10,
+				height: height
+			}).createBody(world)
+			;
 
-		// boundaries - left
-		var leftFixture = new b2FixtureDef;
-		leftFixture.shape = new b2PolygonShape;
-		leftFixture.shape.SetAsBox(meter(10), meter(height));
-		var leftBodyDef = new b2BodyDef;
-		leftBodyDef.type = b2Body.b2_staticBody;
-		leftBodyDef.position.x = meter(-9);
-		leftBodyDef.position.y = meter(-25);
-		var left = world.CreateBody(leftBodyDef);
-		left.CreateFixture(leftFixture);
+		var container = new createjs.Container();
+		container.addChild(leftBoundary);
+		container.addChild(rightBoundary);
 
-		// boundaries - right
-		var rightFixture = new b2FixtureDef;
-		rightFixture.shape = new b2PolygonShape;
-		rightFixture.shape.SetAsBox(meter(10), meter(height));
-		var rightBodyDef = new b2BodyDef;
-		rightBodyDef.type = b2Body.b2_staticBody;
-		rightBodyDef.position.x = meter(width);
-		rightBodyDef.position.y = meter(-25);
-		var right = world.CreateBody(rightBodyDef);
-		right.CreateFixture(rightFixture);
-	}
+		game.map.each(function(row, rowIndex) {
+			var count = 0;
+			var prevColumn = '';
+			var cIndex = 0;
+			var startC = 0;
 
-	// actor object - this is responsible for taking the body's position and translating it to your easel display object
-	var ActorObject = function(body, skin) {
-		this.body = body;
-		this.skin = skin;
-		this.update = function() {  // translate box2d positions to pixels
-			this.skin.rotation = this.body.GetAngle() * (180 / Math.PI);
-			this.skin.x = pixel(this.body.GetWorldCenter().x);
-			this.skin.y = pixel(this.body.GetWorldCenter().y);
-		}
-		actors.push(this);
+			row.each(function(column, columnIndex) {
+				if (columnIndex > 0 && column != '#' && prevColumn === '#') {
+					container.addChild(
+						game.Tile({
+							x: startC * 10,
+							y: rowIndex * 20,
+							width: 10 * (count + 1),
+							height: 20
+						}).createBody(world)
+					);
+
+					count = 0;
+				}
+
+				if (column === '#') {
+					count++;
+				}
+
+				if (column != '#') {
+					startC = columnIndex;
+				}
+
+				cIndex = columnIndex;
+
+				prevColumn = column;
+			});
+
+			if (count > 0) {
+				container.addChild(
+					game.Tile({
+						x: startC * 10,
+						y: rowIndex * 20,
+						width: 10 * (count + 1),
+						height: 20
+					}).createBody(world)
+				);
+
+				count = 0;
+			}
+		});
+
+		return container;
 	}
 
 	// box2d update function. delta time is used to avoid differences in simulation if frame rate drops
@@ -85,6 +104,13 @@ var game = game || {};
 		var dt = now - lastTimestamp;
 		fixedTimestepAccumulator += dt;
 		lastTimestamp = now;
+
+		destroyQueue.each(function(body) {
+			world.DestroyBody(body);
+		});
+
+		destroyQueue = [];
+
 		while(fixedTimestepAccumulator >= STEP) {
 			// update active actors
 			actors.each(function(actor) {
@@ -95,41 +121,94 @@ var game = game || {};
 
 			fixedTimestepAccumulator -= STEP;
 			world.ClearForces();
-   			// world.m_debugDraw.m_sprite.graphics.clear();
-   			// world.DrawDebugData();
+   			world.m_debugDraw.m_sprite.graphics.clear();
+   			world.DrawDebugData();
 		}
-	}
+	};
 
-	game.world = function(width, height) {
-		world = new b2World(new b2Vec2(0,10), true);
+	// box2d debugger
+	var addDebug = function() {
+		var debugDraw = new b2DebugDraw();
+		debugDraw.SetSprite(document.getElementById('debugCanvas').getContext('2d'));
+		debugDraw.SetDrawScale(30);
+		debugDraw.SetFillAlpha(0.1);
+		debugDraw.SetLineThickness(1.0);
+		debugDraw.SetFlags(b2DebugDraw.e_shapeBit | b2DebugDraw.e_jointBit);
+		world.SetDebugDraw(debugDraw);
+	};
 
-		createBoundaries(world, width, height);
+	game.World = function(width, height) {
+		world = new b2World(new b2Vec2(0, 4), false);
+		var skin = createBoundaries(world, width, height);
+		addDebug();
 
 		return {
+			skin: skin,
 			world: world,
-			addObject: function(skin) {
+			addContactListener: function(callbacks) {
+				var listener = new Box2D.Dynamics.b2ContactListener;
+
+				if (callbacks.BeginContact) {
+					listener.BeginContact = function(contact) {
+						callbacks.BeginContact(
+							contact.GetFixtureA().GetBody().GetUserData(),
+							contact.GetFixtureB().GetBody().GetUserData()
+						);
+					};
+				}
+
+				if (callbacks.EndContact) {
+					listener.EndContact = function(contact) {
+						callbacks.EndContact(
+							contact.GetFixtureA().GetBody().GetUserData(),
+							contact.GetFixtureB().GetBody().GetUserData()
+						);
+					};
+				}
+
+				if (callbacks.PostSolve) {
+					listener.PostSolve = function(contact, impulse) {
+						callbacks.EndContact(
+							contact.GetFixtureA().GetBody().GetUserData(),
+							contact.GetFixtureB().GetBody().GetUserData(),
+							impulse.normalImpulses[0]
+						);
+					};
+				}
+
+				world.SetContactListener(listener);
+			},
+			addObject: function(actor) {
 				var fixture = new b2FixtureDef;
-				fixture.density = 1;
+				fixture.density = 4;
 				fixture.restitution = 0;
 				fixture.shape = new b2PolygonShape;
-				fixture.shape.SetAsBox(meter(skin.width), meter(skin.height));
+				fixture.shape.SetAsBox(meter(actor.width)/2, meter(actor.height)/2);
+
 				var bodyDef = new b2BodyDef;
 				bodyDef.type = b2Body.b2_dynamicBody;
-				bodyDef.position.x = meter(skin.x);
-				bodyDef.position.y = meter(skin.y);
+				bodyDef.position.x = meter(actor.x);
+				bodyDef.position.y = meter(actor.y);
 
-				var obj = world.CreateBody(bodyDef);
-				obj.CreateFixture(fixture);
+				obj = world.CreateBody(bodyDef);
+				obj.SetFixedRotation(true);
 
-				// assign actor
-				var actor = new ActorObject(obj, skin);
+				fixture = obj.CreateFixture(fixture);
+				console.log(actor);
+				actor.applyFixture(fixture);
+				actor.setBody(obj);
+
 				obj.SetUserData(actor);  // set the actor as user data of the body so we can use it later: body.GetUserData()
-
+				actors.push(actor);
 				objs.push(obj);
+			},
+			destroy: function(actor) {
+				actors.remove(actor);
+				destroyQueue.push(actor.getBody());
 			},
 			tick: function() {
 				update();
 			}
-		}
-	}
+		};
+	};
 })(game, Box2D);

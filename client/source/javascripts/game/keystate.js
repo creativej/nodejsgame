@@ -21,7 +21,11 @@ var game = game || {};
 			return this.keysDown.indexOf(keyCode) > -1;
 		},
 		isDown: function(letter) {
-			return this.keysDown.indexOf(this.keys[letter]) > -1;
+			if (letter) {
+				return this.keysDown.indexOf(this.keys[letter]) > -1;
+			} else {
+				return this.keysDown.length;
+			}
 		}
 	};
 
