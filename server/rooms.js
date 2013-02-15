@@ -1,9 +1,10 @@
 (function() {
 	"use strict";
 
+	require('../common/libs/sugar-1.3.6.min.js');
+
 	var
-		root = this,
-		_ = require('./libs/underscore')
+		root = this
 		;
 
 	/**
@@ -19,7 +20,7 @@
 		get: function(name) {
 			var result = null;
 
-			_.each(this.data, function(room){
+			this.data.each(function(room) {
 				if (room.name === name) {
 					result = room;
 					return;

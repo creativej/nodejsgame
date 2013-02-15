@@ -3,7 +3,6 @@
 
 	var
 		root = this,
-		_ = require('./libs/underscore'),
 		EventEmitter2 = require('./libs/eventemitter2').EventEmitter2
 		;
 

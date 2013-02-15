@@ -1,11 +1,9 @@
 (function() {
 	"use strict";
 
-
 	var
 		playground = "default",
 		root = this,
-		_ = require('./libs/underscore'),
 		Room = require('./room').Room,
 		firstTime = true
 		;

@@ -1,5 +1,5 @@
-//= require libs/sugar-1.3.6.min
-//= require libs/box2dweb-2.1a3
+//= require common/libs/sugar-1.3.6.min
+//= require common/libs/box2dweb-2.1a3
 //= require libs/jquery-1.7.1.min
 //= require app/helpers
 //= require app/user

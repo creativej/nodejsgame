@@ -1,7 +1,6 @@
 (function() {
 	"use strict";
 	var
-		_ = require('./libs/underscore'),
 		User = require('./user.js').User,
 		Users = require('./users.js').Users,
 		root = this
@@ -21,7 +20,7 @@
 
 		this.disconnectUser = function(user) {
 			this.removeUser(user);
-			user.broadcast('disconnect');
+			user.broadcast('user.disconnect');
 			if (this.host.get('hash') === user.get('hash')) {
 				this.host = null;
 			}
@@ -46,13 +45,13 @@
 			if (socket) {
 				user = new User(socket, user);
 
-				socket.on('disconnect', function () {
+				socket.on('disconnect.user', function () {
 					self.disconnectUser(user);
 				});
 			}
 
-			user.on('joined', function() {
-				this.broadcast('joined', true);
+			user.on('joined.user', function() {
+				this.broadcast('joined.user', true);
 			});
 
 			this.addUser(user);
