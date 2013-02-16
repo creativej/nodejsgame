@@ -20,13 +20,21 @@
 
 		this.disconnectUser = function(user) {
 			this.removeUser(user);
-			user.broadcast('user.disconnect');
-			if (this.host.get('hash') === user.get('hash')) {
+			user.broadcast('disconnect.user');
+
+			if (this.host && this.host.get('hash') === user.get('hash')) {
 				this.host = null;
 			}
 			user.remove();
 
 			console.log('disconnected');
+		};
+
+		this.disconnectUserBySocket = function(socket) {
+			var user = users.getBySocket(socket);
+			if (user) {
+				this.disconnectUser(user);
+			}
 		};
 
 		this.removeUser = function(user) {
@@ -50,7 +58,8 @@
 				});
 			}
 
-			user.on('joined.user', function() {
+			// Call in user.init
+			user.on('joined', function() {
 				this.broadcast('joined.user', true);
 			});
 
@@ -71,6 +80,10 @@
 
 		this.getUsers = function() {
 			return users;
+		};
+
+		this.setHost = function(user) {
+			this.host = user;
 		};
 	};
 }).call(this);

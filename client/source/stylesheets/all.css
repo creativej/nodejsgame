@@ -85,34 +85,19 @@ body {
   color: #aaa;
 }
 
-.mouse {
-  background: transparent url(../images/cursor.png);
-  width:8px;
-  height:16px;
-  position: absolute;
-  repeat: no-repeat;
-  opacity: 0.5;
-}
 
-form.playground {
-  display: none;
-}
-
-form.playground {
+.signin-form {
   width: 315px;
   margin: 0 auto;
 }
 
-.activated .stage {
-  display: block;
+.signin-form .username {
+  padding: 20px;
+  font-size: 200%;
 }
 
-.activated form.playground {
-  display: none;
-}
-
-.stage {
-  display: none;
+.signin-form .msg {
+  color: #f00;
 }
 
 .hiddencontent {
@@ -121,10 +106,6 @@ form.playground {
 
 .hiddencontent.show {
   display: block;
-}
-
-form.playground .msg {
-  color: #f00;
 }
 
 .hint {

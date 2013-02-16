@@ -41,32 +41,12 @@ app.user = function($, app, socket, user) {
 
 	instance.activate = function() {
 		if (instance.isHost()) {
-			$("body").on('mousemove', function(e) {
-				socket.emit("mousemove", app.helpers.getPos(e));
-			});
-
-			$("*").on('click', function(e) {
-				console.log('click this..');
-				socket.emit('mouseclick', elementPath($(e.target)));
-			});
+			//action
 		}
 	};
 
 	instance.isHost = function() {
 		return instance.data.isHost;
-	};
-
-	instance.setMouse = function(mouseData) {
-		if (!mouse) {
-			mouse = app.components.mouse(this);
-		}
-
-		mouse.update(mouseData);
-		return instance;
-	};
-
-	instance.getMouse = function() {
-		return mouse;
 	};
 
 	return instance;

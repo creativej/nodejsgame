@@ -1,2 +1,6 @@
-World = require('../server/app.js').World;
-World.init(8001)
+var
+	Rooms = require('./rooms').Rooms,
+	World = require('./world.js').World
+	;
+
+World(8001, Rooms);

@@ -29,12 +29,6 @@
 			this.isHost = true;
 		};
 
-		this.activate = function(userData) {
-			this.set('name', userData.name);
-			this.set('isActive', true);
-			this.broadcast('activated', true);
-		};
-
 		this.update = function(prop, value) {
 			self
 				.set(prop, value)
@@ -77,6 +71,10 @@
 				user.setHost();
 				this.host = user;
 			}
+		};
+
+		this.getSocket = function() {
+			return socket;
 		};
 	};
 

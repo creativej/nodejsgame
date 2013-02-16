@@ -14,29 +14,33 @@
 			user
 			;
 
-		socket.on("userjoined", function(newUser){
+		socket.on("join.user", function(newUser){
 			user = room.getUser(newUser.hash);
 
 			if (user) {
 				//
 			} else {
 				user = room.join(newUser, socket);
+
+				if (room.getUsers().length() === 1) {
+					room.setHost(user);
+				}
 			}
+
+			socket.emit('populate.room', room.getUsers().raw());
 		});
 
-		socket.on("enter", function(userData) {
-			room.setHost(user);
-			user.activate(userData);
-			socket.emit('userlist', room.getUsers().raw());
+		socket.on('disconnect', function() {
+			room.disconnectUserBySocket(socket);
 		});
 
-		socket.on('mousemove', function (mouse) {
-			user.update('mouse', mouse);
-		});
+		// socket.on('mousemove', function (mouse) {
+		// 	user.update('mouse', mouse);
+		// });
 
-		socket.on('mouseclick', function(elementPath) {
-			user.broadcast('mouseclick', false, elementPath);
-		});
+		// socket.on('mouseclick', function(elementPath) {
+		// 	user.broadcast('mouseclick', false, elementPath);
+		// });
 
 		firstTime = false;
 	};

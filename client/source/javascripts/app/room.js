@@ -1,98 +1,74 @@
-var app = app || {};
+(function($, app){
+	'use strict';
 
-app.Room = (function($, app, io) {
-	"use strict";
+	app.Room = function(socket) {
+		var
+			instance = {},
+			$instance = $(instance),
+			users = app.users($, app),
+			socket,
+			currentUser,
+			readyDeferred = $.Deferred()
+			;
 
-	var
-		instance = {},
-		$instance = $(instance),
-		users = app.users($, app),
-		socket,
-		currentUser
-		;
 
-	instance.init = function(socket) {
-		socket.emit("userjoined", this.getCurrentUser());
-
-		socket.on('disconnect', function(user) {
-			$instance.trigger('disconnect', user);
-		});
-
-		// socket.on('joined', function(user) {
-		// 	instance.addUser.call(instance, user);
-
-		// 	if (user.hash != instance.user.data.hash) {
-		// 		instance.socket.on(user.hash + ".mouse.changed", function(value) {
-		// 			user.mouse = value;
-		// 			$instance.trigger('mouse.changed', user);
-		// 		});
-		// 	}
-		// });
-
-		// socket.on('userlist', function(users) {
-		// 	$(instance).trigger('userlist', { users: users });
-
-		// 	$.each(users, function(user) {
-		// 		if (user.hash != instance.user.data.hash) {
-		// 			instance.socket.on(user.hash + ".mouse.changed", function(value) {
-		// 				user.mouse = value;
-		// 				$instance.trigger('mouse.changed', user);
-		// 			});
-		// 		}
-		// 	});
-		// });
-
-		// socket.on("isActive", function() {
-		// 	instance.activateUser.call(instance);
-		// });
-
-		socket.on("joined", function(user) {
+		instance.enter = function(user) {
 			if (currentUser.hash !== user.hash) {
 				$instance.trigger('joined', user);
 			}
-			// instance.setVisitor.call(instance);
-		});
+		};
 
+		instance.populate = function(list) {
+			list.each(function(user) {
+				instance.addUser(user);
+			});
 
+			$(app).trigger('populated.room', {
+				list: list
+			});
+		};
+
+		instance.removeUser = function(user) {
+			users.remove(user);
+			$(app).trigger('removed.user.room', {
+				user: user
+			});
+		};
+
+		instance.addUser = function(user) {
+			users.add(user);
+			$(app).trigger('added.user.room', {
+				user: user
+			});
+		};
+
+		instance.getUser = function(user) {
+			if (user.hash) {
+				return users.get(user.hash);
+			} else {
+				return users.get(user);
+			}
+		};
+
+		instance.getCurrentUser = function() {
+			return currentUser;
+		};
+		// instance.getUserEvent = function(name) {
+		// 	return currentUser.getHash() + " " + name;
+		// };
+
+		instance.on = function(eventName, callback) {
+			$instance.on(eventName, callback);
+		};
+
+		instance.ready = function() {
+			readyDeferred.resolve();
+		};
+
+		instance.onReady = function(callback) {
+			readyDeferred.done($.proxy(callback, this));
+		};
+
+		return instance;
 	};
-
-	instance.removeUser = function(user) {
-		users.remove(user);
-	};
-
-	instance.addUser = function(user) {
-		users.add(user);
-	};
-
-	instance.getUser = function(user) {
-		if (user.hash) {
-			return users.get(user.hash);
-		} else {
-			return users.get(user);
-		}
-	};
-
-	instance.getCurrentUser = function() {
-		return currentUser || (currentUser = {
-			hash: app.helpers.guidGenerator()
-		});
-	};
-
-	// instance.activateUser = function() {
-	// 	activeUser = new app.User(socket, instance.getUser());
-	// };
-
-	// instance.getActiveUser = function() {
-	// 	return activeUser;
-	// };
-
-	instance.getUserEvent = function(name) {
-		return activeUser.getHash() + " " + name;
-	};
-
-	instance.on = function(eventName, callback) {
-		$instance.on(eventName, callback);
-	};
-
-	return instance;
-});
+}($, app));

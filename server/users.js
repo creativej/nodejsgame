@@ -32,14 +32,34 @@
 			return list[hash];
 		};
 
+		this.getBySocket = function (socket) {
+			var result;
+			console.log(list);
+			this.each(function(user) {
+				console.log('matching socket .. ' + user.getSocket().id + ' - ' + socket.id);
+				if (user.getSocket().id === socket.id) {
+					result = user;
+					return false;
+				}
+			});
+
+			console.log(result);
+
+			return result;
+		};
+
 		this.each = function(callback) {
 			for (var hash in list) {
 				if (list[hash]) {
-					callback(list[hash], hash);
+					if (callback(list[hash], hash) === false) { return false; }
 				}
 			}
 
 			return this;
+		};
+
+		this.length = function() {
+			return length;
 		};
 
 		this.raw = function() {

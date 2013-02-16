@@ -1,5 +1,3 @@
-var app = app || {};
-
 app.users = function($, app) {
 	"use strict";
 	var
@@ -9,7 +7,7 @@ app.users = function($, app) {
 		length
 		;
 
-	instance.get = function(hash) {
+	instance.getByHash = function(hash) {
 		return list[hash];
 	};
 

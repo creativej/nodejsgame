@@ -1,50 +1,25 @@
 (function($, app) {
-	app.components = app.components || {};
-	app.components.userList = function($el) {
-		var
-			instance = {},
-			$instance = $(instance)
-			;
+	'use strict';
 
-		function item(user) {
-			var $user = $('<li class="user-' + user.hash + '">' + user.name + '</li>');
-			return $user;
-		}
+	var userlist;
 
-		instance.set = function(users) {
-			$el.empty();
+	app.onReady(function() {
+		userlist = app.modules.UserList(
+			$('#userlist')
+		);
+	});
 
-			$.each(users, function(idx, user) {
-				if (user.isActive) {
-					instance.add(user);
-				}
-			});
-		};
+	app.on('populated.room', function(e, data) {
+		userlist.populate(data.list);
+	});
 
-		instance.add = function(user) {
-			console.log('add user');
-			$el.append(item(user));
-			return this;
-		};
+	app.on('added.user.room', function(e, data) {
+		userlist.add(data.user);
+	});
 
-		instance.setCurrentUser = function(user) {
-			var $user = this.get(user.hash);
+	app.on('removed.user.room', function(e, data) {
+		userlist.remove(data.user);
+	});
 
-			$user.addClass('current');
-		};
-
-		instance.get = function(hash) {
-			return $el.find('.user-'+hash);
-		};
-
-		instance.remove = function(user) {
-			var $user = $el.find('.user-' + user.hash);
-			console.log($user);
-			console.log($user.length);
-			$user.remove();
-			return this;
-		};
-
-		return instance;
-	};
-})($, app);
+	app.components.userlist = userlist;
+}(jQuery, app));
