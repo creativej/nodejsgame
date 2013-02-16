@@ -1,3 +1,12 @@
   <h3><%= request.params.user %></h3>
+  <div class="actions">
+    <button class="toggle-debug">toggle debug</button>
+    <button class="toggle-map">toggle map</button>
+  </div>
+  <div class="game">
+    <div class="console"></div>
+    <canvas id="debug-canvas" width="800" height="600"></canvas>
+    <canvas id="canvas" width="800" height="600"></canvas>
+  </div>
   <ul id="userlist" data-currentuser="<%= request.params.user %>">
   </ul>

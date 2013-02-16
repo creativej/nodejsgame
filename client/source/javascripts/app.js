@@ -27,9 +27,20 @@
 			});
 
 			this.socket.on('disconnect.user', function(user) {
-				console.log(user);
 				$app.trigger('disconnect.user.server', {
 					user: user
+				});
+			});
+
+			this.socket.on('ready.map', function(data) {
+				$app.trigger('draw.map', {
+					data: data
+				});
+			});
+
+			this.socket.on('update.actors', function(actors) {
+				$app.trigger('update.actors.server', {
+					data: actors
 				});
 			});
 

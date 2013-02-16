@@ -1,5 +1,5 @@
 //= require common/libs/sugar-1.3.6.min
-//= require common/libs/box2dweb-2.1a3
+//= require libs/easeljs-0.6.0.min
 //= require libs/jquery-1.7.1.min
 //= require app
 //= require app/modules/userlist
@@ -8,8 +8,12 @@
 //= require app/users
 //= require app/room
 //= require app/components/userlist
+//= require game/helpers
+//= require game/tile
+//= require game/player
+//= require game/stage
 
-(function($, app) {
+(function($, app, game) {
 	function getCurrentUser(username) {
 		return {
 			name: username,
@@ -32,10 +36,20 @@
 
 		app.on('joined.user.server', function(e, data) {
 			room.addUser(data.user);
+
+			game.stage.drawPlayer(data.user);
 		});
 
 		app.on('disconnect.user.server', function(e, data) {
 			room.removeUser(data.user);
+		});
+
+		app.on('draw.map', function(e, data) {
+			game.stage.drawMap(data.data);
+		});
+
+		app.on('update.actors.server', function(e, data) {
+			game.stage.updateActors(data.data);
 		});
 	});
 
@@ -121,4 +135,4 @@
 
 
 
-}(jQuery, app));
+}(jQuery, app, game));

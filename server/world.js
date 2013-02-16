@@ -5,6 +5,7 @@
 		playground = "default",
 		root = this,
 		Room = require('./room').Room,
+		world = require('./common/box2dworld'),
 		firstTime = true
 		;
 
@@ -13,6 +14,12 @@
 			room = rooms.get(playground),
 			user
 			;
+
+		socket.emit('ready.map', world.getMap().toRawData());
+
+		world.on('tick', function() {
+			socket.emit('update.actors', this.getActorsData());
+		});
 
 		socket.on("join.user", function(newUser){
 			user = room.getUser(newUser.hash);

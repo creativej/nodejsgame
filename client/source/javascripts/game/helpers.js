@@ -22,5 +22,5 @@ var game = game || {};
 		var targetObjectPoint = target.globalToLocal(objPoint.x, objPoint.y);
 
 		return target.hitTest(targetObjectPoint.x, targetObjectPoint.y);
-	}
+	};
 })(window, game, createjs);

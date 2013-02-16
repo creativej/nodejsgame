@@ -3,7 +3,9 @@
 
 	var
 		root = this,
-		EventEmitter2 = require('./libs/eventemitter2').EventEmitter2
+		EventEmitter2 = require('./common/libs/eventemitter2').EventEmitter2,
+		character = require('./common/character'),
+		world = require('./common/box2dworld')
 		;
 
 	/**
@@ -18,8 +20,20 @@
 		this.data.isHost = isHost;
 		this.data.mouse = null;
 
+		this.character = character(
+			data.name,
+			this.data.color || 'rgba(255,255,255,1)'
+		);
+
+		this.character.x = 300;
+		this.character.y = 300;
+		this.character.vY = 2;
+
+
 		this.init = function() {
-			this.emit('joined', self.data);
+			world.addObject(this.character);
+
+			this.emit('joined', this.toRawData());
 
 			return self;
 		};
@@ -75,6 +89,15 @@
 
 		this.getSocket = function() {
 			return socket;
+		};
+
+		this.setCharacter = function(character) {
+			this.character = character(this.get('name'), 'rgba(255,255,255,1)');
+			return this;
+		};
+
+		this.toRawData = function() {
+			return Object.merge(this.data, this.character.toRawData(), false, true);
 		};
 	};
 

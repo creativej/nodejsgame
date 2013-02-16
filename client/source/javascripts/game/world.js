@@ -41,59 +41,19 @@ var game = game || {};
 				y: 0,
 				width: 10,
 				height: height
+			}).createBody(world),
+			bottomBoundary = game.Tile({
+				x: 0,
+				y: height - 10,
+				width: width,
+				height: 10
 			}).createBody(world)
 			;
 
 		var container = new createjs.Container();
 		container.addChild(leftBoundary);
 		container.addChild(rightBoundary);
-
-		game.map.each(function(row, rowIndex) {
-			var count = 0;
-			var prevColumn = '';
-			var cIndex = 0;
-			var startC = 0;
-
-			row.each(function(column, columnIndex) {
-				if (columnIndex > 0 && column != '#' && prevColumn === '#') {
-					container.addChild(
-						game.Tile({
-							x: startC * 10,
-							y: rowIndex * 20,
-							width: 10 * (count + 1),
-							height: 20
-						}).createBody(world)
-					);
-
-					count = 0;
-				}
-
-				if (column === '#') {
-					count++;
-				}
-
-				if (column != '#') {
-					startC = columnIndex;
-				}
-
-				cIndex = columnIndex;
-
-				prevColumn = column;
-			});
-
-			if (count > 0) {
-				container.addChild(
-					game.Tile({
-						x: startC * 10,
-						y: rowIndex * 20,
-						width: 10 * (count + 1),
-						height: 20
-					}).createBody(world)
-				);
-
-				count = 0;
-			}
-		});
+		container.addChild(bottomBoundary);
 
 		return container;
 	}
@@ -129,7 +89,7 @@ var game = game || {};
 	// box2d debugger
 	var addDebug = function() {
 		var debugDraw = new b2DebugDraw();
-		debugDraw.SetSprite(document.getElementById('debugCanvas').getContext('2d'));
+		debugDraw.SetSprite(document.getElementById('debug-canvas').getContext('2d'));
 		debugDraw.SetDrawScale(30);
 		debugDraw.SetFillAlpha(0.1);
 		debugDraw.SetLineThickness(1.0);

@@ -147,7 +147,7 @@ body {
   white-space: pre-wrap;
 }
 
-#debugCanvas {
+#debug-canvas {
   z-index: 2;
   position: absolute;
   left:0;
