@@ -36,6 +36,8 @@
 
 		container.x = options.x;
 		container.y = options.y;
+		container.regX = width/2;
+		container.regY = height/2;
 		container.addChild(skin);
 		container.addChild(hIndicator);
 		container.bullets = [];

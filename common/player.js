@@ -6,7 +6,7 @@
 		game = require('./game')
 		;
 
-	module.exports = function(name, color) {
+	function player(name, color) {
 
 		var
 			width = 20,
@@ -16,8 +16,6 @@
 				height: height,
 				currentState: [],
 				remainJump: 0,
-				regX: width/2,
-				regY: height/2,
 				vX: 2,
 				vY: 2,
 				canJump: true,
@@ -154,5 +152,7 @@
 		};
 
 		return instance;
-	};
+	}
+
+	require('./requireable')(module, 'player', player);
 }());

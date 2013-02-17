@@ -1,6 +1,3 @@
-(function(module) {
-	'use strict';
-
 	var
 		Box2D = require('./libs/box2dweb-2.1a3'),
 		EventEmitter2 = require('./libs/eventemitter2').EventEmitter2,
@@ -18,9 +15,11 @@
 		b2Fixture = Box2D.Dynamics.b2Fixture,
 		b2World = Box2D.Dynamics.b2World,
 		b2PolygonShape = Box2D.Collision.Shapes.b2PolygonShape,
+		b2DebugDraw = Box2D.Dynamics.b2DebugDraw,
 		meter = helpers.meter,
 		pixel = helpers.pixel,
-		interval
+		interval,
+		isDebug = false
 		;
 
 	// important box2d scale and speed vars
@@ -56,10 +55,15 @@
 
 			fixedTimestepAccumulator -= FPS;
 			world.ClearForces();
+
+			if (isDebug) {
+				world.m_debugDraw.m_sprite.graphics.clear();
+	   			world.DrawDebugData();
+			}
 		}
 	};
 
-	module.exports = function(screenWidth, screenHeight) {
+	var box2dworld = function(screenWidth, screenHeight) {
 		// Box2d vars
 		var
 			instance = new EventEmitter2(),
@@ -145,6 +149,18 @@
 			});
 		};
 
+		instance.setDebug = function(el) {
+			var debugDraw = new b2DebugDraw();
+			debugDraw.SetSprite(el.getContext('2d'));
+			debugDraw.SetDrawScale(30);
+			debugDraw.SetFillAlpha(0.1);
+			debugDraw.SetLineThickness(1.0);
+			debugDraw.SetFlags(b2DebugDraw.e_shapeBit | b2DebugDraw.e_jointBit);
+			world.SetDebugDraw(debugDraw);
+
+			isDebug = true;
+		};
+
 		//Do one animation interation and start animating
 		interval = setInterval(function () {
 			update(world);
@@ -153,38 +169,6 @@
 		}, 1000/FPS);
 
 		return instance;
-	}(SCREEN_WIDTH, SCREEN_HEIGHT)
-	.addContactListener({
-		BeginContact: function(obj1, obj2) {
-			console.log('hit');
-			if (obj1.type === 'player' && obj2.type === 'tile') {
-				console.log(obj1);
-				// console.log(obj1);
-				// console.log(obj2);
-				// game.debug('obj2:' + Math.round(obj2.x + obj2.width), true);
-				// game.debug('obj1:' + Math.round(obj1.x - obj1.width/2));
-				// game.debug('obj2:' + Math.round(obj2.x), true);
-				// game.debug('obj1:' + Math.round(obj1.x + obj1.width/2));
-				if (
-					(Math.round(obj2.x + obj2.width) <= Math.round(obj1.x - obj1.width/2) ) ||
-					(Math.round(obj1.x + obj1.width/2 ) <= Math.round(obj2.x) )
-					) {
-					console.log('blocked');
-					obj1.blocked = true;
-				}
-			}
+	}(SCREEN_WIDTH, SCREEN_HEIGHT);
 
-			if (obj1.type === 'bullet') {
-				obj1.destroy();
-
-				if (obj2.isEnemy) {
-					obj2.hit();
-				}
-			}
-		},
-		EndContact: function(obj1, obj2) {
-			obj1.blocked = false;
-		}
-	})
-	;
-}(module));
+	require('./requireable')(module, 'world', box2dworld);

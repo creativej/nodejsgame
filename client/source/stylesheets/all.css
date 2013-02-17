@@ -147,6 +147,10 @@ body {
   white-space: pre-wrap;
 }
 
+.test #debug-canvas {
+  display: block;
+}
+
 #debug-canvas {
   z-index: 2;
   position: absolute;

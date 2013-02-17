@@ -1,4 +1,3 @@
-(function() {
 	var	tile = require('./tile');
 	var bounds = [];
 	function createBounds(world, width, height) {
@@ -28,12 +27,8 @@
 		bounds.push(bottom);
 	}
 
-	module.exports = {
+	require('./requireable')(module, 'map', {
 		create: function(world, width, height) {
-			var
-				instance = {}
-				;
-
 			createBounds(world, width, height);
 		},
 		toRawData: function() {
@@ -41,5 +36,4 @@
 				return bound.toJson();
 			});
 		}
-	};
-}());
+	});

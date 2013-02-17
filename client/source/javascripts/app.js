@@ -52,7 +52,9 @@
 			// socketTriggerApp('populate.room', this.socket, this);
 			appReady.resolve();
 		},
-
+		offlineReady: function() {
+			appReady.resolve();
+		},
 		components: {},
 		modules: {},
 		helpers: {}

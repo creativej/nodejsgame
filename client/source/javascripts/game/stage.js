@@ -59,7 +59,7 @@ var game = game || {};
 
 	$(function() {
 		$(".toggle-debug").click(function() {
-			$('#debugCanvas').toggle();
+			$('#debug-canvas').toggle();
 		});
 
 		$(".toggle-map").click(function() {
