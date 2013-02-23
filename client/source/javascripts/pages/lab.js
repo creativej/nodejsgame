@@ -1,5 +1,7 @@
 //= require common/libs/sugar-1.3.6.min
+//= require common/bundled/keystate
 //= require libs/easeljs-0.6.0.min
+//= require libs/tweenjs-3.0.0.min
 //= require libs/jquery-1.7.1.min
 //= require app
 //= require app/modules/userlist
@@ -10,8 +12,12 @@
 //= require app/components/userlist
 //= require game/helpers
 //= require game/tile
+//= require game/aimer
+//= require game/bullet
 //= require game/player
+//= require game/boulder
 //= require game/stage
+
 
 (function($, app, game) {
 	function getCurrentUser(username) {
@@ -25,23 +31,39 @@
 		var
 			userList = app.components.userList,
 			room = app.Room(socket),
-			socket = app.socket
+			socket = app.socket,
+			currentUser = getCurrentUser($('#userlist').data('currentuser'))
 			;
 
-		socket.emit('join.user', getCurrentUser($('#userlist').data('currentuser')));
+		socket.emit('join.user', currentUser);
 
 		app.on('populate.room', function(e, data) {
 			room.populate(data.users);
+
+			data.users.each(function(user) {
+				if (user.hash === currentUser.hash) {
+					var player = game.stage.drawPlayer(user);
+
+					console.log(player);
+					player.onFire = function(data) {
+						game.stage.drawBullet(data);
+						socket.emit('fire.player', data);
+					};
+				} else {
+					game.stage.drawEnemy(user);
+				}
+			});
 		});
 
 		app.on('joined.user.server', function(e, data) {
 			room.addUser(data.user);
 
-			game.stage.drawPlayer(data.user);
+			game.stage.drawEnemy(data.user);
 		});
 
 		app.on('disconnect.user.server', function(e, data) {
 			room.removeUser(data.user);
+			game.stage.removePlayer(data.user);
 		});
 
 		app.on('draw.map', function(e, data) {

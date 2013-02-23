@@ -14,6 +14,8 @@
 	require('./requireable')(module, 'game', {
 		BOUNDARY: 0x0001,
 		PLAYER: 0x0002,
-		ENEMY: 0x0004,
-		BULLET: 0x0008
+		BULLET: 0x0004,
+		BOULDER: 0x0008,
+		ALL: 0x00010
 	});
+

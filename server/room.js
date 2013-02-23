@@ -30,6 +30,10 @@
 			console.log('disconnected');
 		};
 
+		this.getUserBySocket = function(socket) {
+			return users.getBySocket(socket);
+		};
+
 		this.disconnectUserBySocket = function(socket) {
 			var user = users.getBySocket(socket);
 			if (user) {
@@ -56,16 +60,11 @@
 				socket.on('disconnect.user', function () {
 					self.disconnectUser(user);
 				});
+
+				this.addUser(user);
+
+				user.init();
 			}
-
-			// Call in user.init
-			user.on('joined', function() {
-				this.broadcast('joined.user', true);
-			});
-
-			this.addUser(user);
-
-			user.init();
 
 			return user;
 		};

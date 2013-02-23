@@ -1,4 +1,4 @@
-(function(game, createjs) {
+(function($, app, game, createjs) {
 	'use strict';
 
 	function healthIndicator(x, y, width, height, color) {
@@ -26,6 +26,7 @@
 	function Player(options) {
 		var
 			container = new createjs.Container(),
+			$container = $(container),
 			width = options.width,
 			height = options.height,
 			color = options.color,
@@ -34,6 +35,7 @@
 			health = 100
 			;
 
+		container.hash = options.hash;
 		container.x = options.x;
 		container.y = options.y;
 		container.regX = width/2;
@@ -42,6 +44,63 @@
 		container.addChild(hIndicator);
 		container.bullets = [];
 		container.snapToPixel = true;
+
+		container.globalRegPoint = function() {
+			return this.localToGlobal(this.regX, this.regY);
+		};
+
+		container.updateAim = function(x, y) {
+			if (this.aimer) {
+				this.aimer.update(this.globalRegPoint(), x, y);
+			}
+		};
+
+		container.setAimer = function(aimer) {
+			this.aimer = aimer;
+			this.addChild(this.aimer.getShape());
+		};
+
+		container.die = function() {
+			createjs.Tween.get(this).to({alpha:0}, 500, createjs.Ease.getPowIn(2.2)).call(function() {
+				$container.trigger('died');
+			});
+		};
+
+		container.on = function(name, callback) {
+			$container.on(name, callback);
+			return container;
+		};
+
+		container.onFire = function() {};
+
+		container.fire = function(targetX, targetY) {
+			var point = this.globalRegPoint();
+			this.onFire({
+				hash: 'bullet-' + app.helpers.guidGenerator(),
+				target: {
+					x: targetX,
+					y: targetY
+				},
+				from: {
+					x: point.x,
+					y: point.y
+				}
+			});
+
+			// $container.trigger('fire');
+			// var
+			// 	point = this.globalRegPoint(),
+			// 	self = this
+			// 	;
+
+			// var bullet = game.Bullet(point, targetX, targetY);
+			// game.stage.addChild(bullet);
+
+			// bullet.onDestroy = function() {
+			// 	self.bullets.remove(this);
+			// };
+			// this.bullets.push(bullet);
+		};
 
 		return container;
 	}
@@ -78,4 +137,4 @@
 
 	game.Player = Player;
 	// game.Enemy = Enemy;
-})(game, createjs);
+})(jQuery, app, game, createjs);

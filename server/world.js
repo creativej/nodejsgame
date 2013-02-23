@@ -5,7 +5,9 @@
 		playground = "default",
 		root = this,
 		Room = require('./room').Room,
+		boulder = require('./common/boulder'),
 		world = require('./common/box2dworld'),
+		helpers = require('./common/helpers'),
 		firstTime = true
 		;
 
@@ -18,36 +20,63 @@
 		socket.emit('ready.map', world.getMap().toRawData());
 
 		world.on('tick', function() {
-			socket.emit('update.actors', this.getActorsData());
+			room.getUsers().each(function(user) {
+				user.resolveActions();
+			});
+
+			this.getActors().each(function(actor) {
+				if (actor.type === 'bullet' && !actor.getBody().IsAwake()) {
+					actor.destroy();
+				}
+			});
+
+			var actorsData = this.getActorsData();
+
+			if (actorsData.length) {
+				socket.emit('update.actors', actorsData);
+			}
+
+			if (Math.random() < 0.001) {
+				var rock = boulder({
+					hash: 'boulder-' + helpers.guidGenerator(),
+					x: Math.random() * 300 + 50,
+					y: 0,
+					width: 50
+				});
+
+				world.addObject(rock);
+			}
 		});
 
 		socket.on("join.user", function(newUser){
 			user = room.getUser(newUser.hash);
 
-			if (user) {
-				//
-			} else {
+			if (!user) {
 				user = room.join(newUser, socket);
-
-				if (room.getUsers().length() === 1) {
-					room.setHost(user);
-				}
 			}
 
-			socket.emit('populate.room', room.getUsers().raw());
+			socket.emit('populate.room', room.getUsers().toRawData());
 		});
 
 		socket.on('disconnect', function() {
 			room.disconnectUserBySocket(socket);
 		});
 
-		// socket.on('mousemove', function (mouse) {
-		// 	user.update('mouse', mouse);
-		// });
+		socket.on('keydown', function(keys) {
+			var user = room.getUserBySocket(socket);
 
-		// socket.on('mouseclick', function(elementPath) {
-		// 	user.broadcast('mouseclick', false, elementPath);
-		// });
+			if (user) {
+				user.setKeyDown(keys);
+			}
+		});
+
+		socket.on('fire.player', function(data) {
+			var user = room.getUserBySocket(socket);
+
+			if (user) {
+				user.fire(data);
+			}
+		});
 
 		firstTime = false;
 	};

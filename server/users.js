@@ -34,16 +34,12 @@
 
 		this.getBySocket = function (socket) {
 			var result;
-			console.log(list);
 			this.each(function(user) {
-				console.log('matching socket .. ' + user.getSocket().id + ' - ' + socket.id);
 				if (user.getSocket().id === socket.id) {
 					result = user;
 					return false;
 				}
 			});
-
-			console.log(result);
 
 			return result;
 		};
@@ -62,9 +58,9 @@
 			return length;
 		};
 
-		this.raw = function() {
+		this.toRawData = function() {
 			return _.map(list, function(user) {
-				return user.data;
+				return user.toRawData();
 			});
 		};
 	};

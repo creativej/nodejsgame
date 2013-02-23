@@ -12,11 +12,11 @@
 			;
 
 
-		instance.enter = function(user) {
-			if (currentUser.hash !== user.hash) {
-				$instance.trigger('joined', user);
-			}
-		};
+		// instance.enter = function(user) {
+		// 	if (currentUser.hash !== user.hash) {
+		// 		$instance.trigger('joined', user);
+		// 	}
+		// };
 
 		instance.populate = function(list) {
 			list.each(function(user) {

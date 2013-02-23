@@ -11854,6 +11854,166 @@ require.define("/libs/eventemitter2.js",function(require,module,exports,__dirnam
 
 });
 
+require.define("/helpers.js",function(require,module,exports,__dirname,__filename,process,global){require('./requireable')(module, 'helpers', {
+	meter: function(pixels) {
+		return pixels / 30;
+	},
+	pixel: function(meters) {
+		return meters * 30;
+	},
+	guidGenerator: function() {
+		var S4 = function() {
+			return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+		};
+		return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
+	}
+});
+
+});
+
+require.define("/requireable.js",function(require,module,exports,__dirname,__filename,process,global){/*
+This is a hack to make window object available in nodejs
+for easy export of modules client & server side
+ */
+module.exports = function(module, name, func) {
+	if (typeof module !== 'undefined' && module.exports) {
+		module.exports = func;
+	}
+
+	if (typeof window !== 'undefined') {
+		window.common = window.common || {};
+		window.common[name] = func;
+	}
+};
+
+});
+
+require.define("/map.js",function(require,module,exports,__dirname,__filename,process,global){	var	tile = require('./tile');
+	var bounds = [];
+	function createBounds(world, width, height) {
+		var
+			left = tile({
+				x: -10,
+				y: 0,
+				width: 10,
+				height: height
+			}).addToWorld(world),
+			right = tile({
+				x: width,
+				y: 0,
+				width: 10,
+				height: height
+			}).addToWorld(world),
+			bottom = tile({
+				x: 0,
+				y: height - 10,
+				width: width,
+				height: 10
+			}).addToWorld(world)
+			;
+
+		bounds.push(left);
+		bounds.push(right);
+		bounds.push(bottom);
+	}
+
+	require('./requireable')(module, 'map', {
+		create: function(world, width, height) {
+			createBounds(world, width, height);
+		},
+		toRawData: function() {
+			return bounds.map(function(bound) {
+				return bound.toJson();
+			});
+		}
+	});
+
+});
+
+require.define("/tile.js",function(require,module,exports,__dirname,__filename,process,global){var
+	Box2D = require('./libs/box2dweb-2.1a3'),
+	EventEmitter2 = require('./libs/EventEmitter2').EventEmitter2,
+	helpers = require('./helpers')
+	;
+
+var
+	props = ['density', 'restitution'],
+	b2BodyDef = Box2D.Dynamics.b2BodyDef,
+	b2Body = Box2D.Dynamics.b2Body,
+	b2FixtureDef = Box2D.Dynamics.b2FixtureDef,
+	b2PolygonShape = Box2D.Collision.Shapes.b2PolygonShape,
+	meter = helpers.meter,
+	pixel = helpers.pixel
+	;
+
+function Tile(options) {
+	var instance = new EventEmitter2();
+	instance.name = options.name || 'tile';
+	instance.type = 'tile';
+	instance.width = options.width;
+	instance.height = options.height;
+	instance.snapToPixel = true;
+
+	var
+		fixture = new b2FixtureDef(),
+		width = options.width / 2,
+		height = options.height /2
+		;
+
+	props.each(function(key) {
+		if (options[key] !== undefined) {
+			fixture[key] = options[key];
+		}
+	});
+
+	fixture.shape = new b2PolygonShape();
+	fixture.shape.SetAsBox(meter(width), meter(height));
+
+	var bodyDef = new b2BodyDef();
+	bodyDef.type = b2Body.b2_staticBody;
+	bodyDef.position.x = meter(options.x + width);
+	bodyDef.position.y = meter(options.y + height);
+
+	instance.getBodyDef = function() {
+		return bodyDef;
+	};
+
+	instance.addToWorld = function(world) {
+		this.body = world.CreateBody(bodyDef);
+		this.body.CreateFixture(fixture);
+		this.body.SetUserData(this);
+
+		this.emit('addedtoworld', instance.getPixelPos());
+
+		return this;
+	};
+
+	instance.getPixelPos = function() {
+		return {
+			x: pixel(instance.body.GetWorldCenter().x) - width,
+			y: pixel(instance.body.GetWorldCenter().y) - height
+		};
+	};
+
+	instance.toJson = function() {
+		var pos = this.getPixelPos();
+
+		return {
+			x: pos.x,
+			y: pos.y,
+			width: instance.width,
+			height: instance.height
+		};
+	};
+
+	return instance;
+}
+
+require('./requireable')(module, 'Tile', Tile);
+
+
+});
+
 require.define("/libs/EventEmitter2.js",function(require,module,exports,__dirname,__filename,process,global){;!function(exports, undefined) {
 
   var isArray = Array.isArray ? Array.isArray : function _isArray(obj) {
@@ -12420,163 +12580,241 @@ require.define("/game.js",function(require,module,exports,__dirname,__filename,p
 	require('./requireable')(module, 'game', {
 		BOUNDARY: 0x0001,
 		PLAYER: 0x0002,
-		ENEMY: 0x0004,
-		BULLET: 0x0008
+		BULLET: 0x0004,
+		BOULDER: 0x0008,
+		ALL: 0x00010
 	});
 
-});
-
-require.define("/helpers.js",function(require,module,exports,__dirname,__filename,process,global){require('./requireable')(module, 'helpers', {
-	meter: function(pixels) {
-		return pixels / 30;
-	},
-	pixel: function(meters) {
-		return meters * 30;
-	}
-});
 
 });
 
-require.define("/map.js",function(require,module,exports,__dirname,__filename,process,global){	var	tile = require('./tile');
-	var bounds = [];
-	function createBounds(world, width, height) {
-		var
-			left = tile({
-				x: -10,
-				y: 0,
-				width: 10,
-				height: height
-			}).addToWorld(world),
-			right = tile({
-				x: width,
-				y: 0,
-				width: 10,
-				height: height
-			}).addToWorld(world),
-			bottom = tile({
-				x: 0,
-				y: height - 10,
-				width: width,
-				height: 10
-			}).addToWorld(world)
-			;
-
-		bounds.push(left);
-		bounds.push(right);
-		bounds.push(bottom);
-	}
-
-	require('./requireable')(module, 'map', {
-		create: function(world, width, height) {
-			createBounds(world, width, height);
-		},
-		toRawData: function() {
-			return bounds.map(function(bound) {
-				return bound.toJson();
-			});
-		}
-	});
-
-});
-
-require.define("/tile.js",function(require,module,exports,__dirname,__filename,process,global){var
-	Box2D = require('./libs/box2dweb-2.1a3'),
-	EventEmitter2 = require('./libs/EventEmitter2').EventEmitter2,
-	helpers = require('./helpers')
-	;
-
-var
-	props = ['density', 'restitution'],
-	b2BodyDef = Box2D.Dynamics.b2BodyDef,
-	b2Body = Box2D.Dynamics.b2Body,
-	b2FixtureDef = Box2D.Dynamics.b2FixtureDef,
-	b2PolygonShape = Box2D.Collision.Shapes.b2PolygonShape,
-	meter = helpers.meter,
-	pixel = helpers.pixel
-	;
-
-function Tile(options) {
-	var instance = new EventEmitter2();
-	instance.name = options.name || 'tile';
-	instance.type = 'tile';
-	instance.width = options.width;
-	instance.height = options.height;
-	instance.snapToPixel = true;
-
-	var
-		fixture = new b2FixtureDef(),
-		width = options.width / 2,
-		height = options.height /2
+require.define("/box2dworld.js",function(require,module,exports,__dirname,__filename,process,global){	var
+		Box2D = require('./libs/box2dweb-2.1a3'),
+		EventEmitter2 = require('./libs/eventemitter2').EventEmitter2,
+		helpers = require('./helpers'),
+		map = require('./map')
 		;
 
-	props.each(function(key) {
-		if (options[key] !== undefined) {
-			fixture[key] = options[key];
+	var
+		SCREEN_WIDTH = 800,
+		SCREEN_HEIGHT = 600,
+		b2Vec2 = Box2D.Common.Math.b2Vec2,
+		b2BodyDef = Box2D.Dynamics.b2BodyDef,
+		b2Body = Box2D.Dynamics.b2Body,
+		b2FixtureDef = Box2D.Dynamics.b2FixtureDef,
+		b2Fixture = Box2D.Dynamics.b2Fixture,
+		b2World = Box2D.Dynamics.b2World,
+		b2PolygonShape = Box2D.Collision.Shapes.b2PolygonShape,
+		b2DebugDraw = Box2D.Dynamics.b2DebugDraw,
+		meter = helpers.meter,
+		pixel = helpers.pixel,
+		interval,
+		isDebug = false
+		;
+
+	// important box2d scale and speed vars
+	var FPS = 24, TIMESTEP = 1/FPS;
+	var debugContext;
+	var lastTimestamp = Date.now();
+	var fixedTimestepAccumulator = 0;
+	var bodiesToRemove = [];
+	var actors = [];
+	// var objs = [];
+	var destroyQueue = [];
+
+
+	// box2d update function. delta time is used to avoid differences in simulation if frame rate drops
+	var update = function(world) {
+		var now = Date.now();
+		var dt = now - lastTimestamp;
+		fixedTimestepAccumulator += dt;
+		lastTimestamp = now;
+
+		destroyQueue.each(function(body) {
+			world.DestroyBody(body);
+			console.log('body destroyed.. ');
+			console.log('tota body left: ' + actors.length);
+		});
+
+		destroyQueue = [];
+
+		while(fixedTimestepAccumulator >= FPS) {
+			// update active actors
+			actors.each(function(actor) {
+				actor.update();
+			});
+			world.Step(TIMESTEP, 10, 10);
+
+			fixedTimestepAccumulator -= FPS;
+			world.ClearForces();
+
+			if (isDebug) {
+				world.m_debugDraw.m_sprite.graphics.clear();
+	   			world.DrawDebugData();
+			}
+		}
+	};
+
+	var box2dworld = function(screenWidth, screenHeight) {
+		// Box2d vars
+		var
+			instance = new EventEmitter2(),
+			world = new b2World(new b2Vec2(0, 4), true)
+			;
+
+		map.create(world, screenWidth, screenHeight);
+
+		instance.tick = function() {
+			update(world);
+		};
+
+		instance.getMap = function() {
+			return map;
+		};
+
+		instance.addContactListener = function(callbacks) {
+			var listener = new Box2D.Dynamics.b2ContactListener;
+
+			if (callbacks.BeginContact) {
+				listener.BeginContact = function(contact) {
+					callbacks.BeginContact(
+						contact.GetFixtureA().GetBody().GetUserData(),
+						contact.GetFixtureB().GetBody().GetUserData()
+					);
+				};
+			}
+
+			if (callbacks.EndContact) {
+				listener.EndContact = function(contact) {
+					callbacks.EndContact(
+						contact.GetFixtureA().GetBody().GetUserData(),
+						contact.GetFixtureB().GetBody().GetUserData()
+					);
+				};
+			}
+
+			if (callbacks.PostSolve) {
+				listener.PostSolve = function(contact, impulse) {
+					callbacks.EndContact(
+						contact.GetFixtureA().GetBody().GetUserData(),
+						contact.GetFixtureB().GetBody().GetUserData(),
+						impulse.normalImpulses[0]
+					);
+				};
+			}
+
+			world.SetContactListener(listener);
+
+			return this;
+		};
+
+		instance.addObject = function(actor) {
+			var bodyDef = new b2BodyDef();
+			bodyDef.type = b2Body.b2_dynamicBody;
+			bodyDef.position.x = meter(actor.x);
+			bodyDef.position.y = meter(actor.y);
+
+			if (actor.customBodyDef) {
+				bodyDef = actor.customBodyDef(bodyDef);
+			}
+
+			var obj = world.CreateBody(bodyDef);
+
+			if (actor.customBody) {
+				obj = actor.customBody(obj);
+			}
+
+			actor.customFixtureDef(obj, new b2FixtureDef());
+			actor.setBody(obj);
+
+			obj.SetUserData(actor);  // set the actor as user data of the body so we can use it later: body.GetUserData()
+			actors.push(actor);
+			// objs.push(obj);
+		};
+
+		instance.getActorsData = function() {
+			return actors.map(function(actor) {
+				return actor.toRawData();
+			});
+		};
+
+		instance.getActors = function() {
+			return actors;
+		};
+
+		instance.destroyObject = function(actor) {
+			console.log(actor.hash);
+			actors.remove(function(n) {
+				return n.hash === actor.hash;
+			});
+			destroyQueue.push(actor.getBody());
+		};
+
+		instance.setDebug = function(el) {
+			var debugDraw = new b2DebugDraw();
+			debugDraw.SetSprite(el.getContext('2d'));
+			debugDraw.SetDrawScale(30);
+			debugDraw.SetFillAlpha(0.1);
+			debugDraw.SetLineThickness(1.0);
+			debugDraw.SetFlags(b2DebugDraw.e_shapeBit | b2DebugDraw.e_jointBit);
+			world.SetDebugDraw(debugDraw);
+
+			isDebug = true;
+		};
+
+		//Do one animation interation and start animating
+		interval = setInterval(function () {
+			update(world);
+			instance.emit('tick');
+		}, 1000/FPS);
+
+		return instance;
+	}(SCREEN_WIDTH, SCREEN_HEIGHT)
+	.addContactListener({
+		BeginContact: function(obj1, obj2) {
+			// console.log('hit');
+			// console.log('hit');
+			// console.log('hit');
+			// console.log('hit');
+			// console.log('hit');
+			// if (obj1.type === 'player' && obj2.type === 'tile') {
+			// 	console.log(obj1);
+			// 	// console.log(obj1);
+			// 	// console.log(obj2);
+			// 	// game.debug('obj2:' + Math.round(obj2.x + obj2.width), true);
+			// 	// game.debug('obj1:' + Math.round(obj1.x - obj1.width/2));
+			// 	// game.debug('obj2:' + Math.round(obj2.x), true);
+			// 	// game.debug('obj1:' + Math.round(obj1.x + obj1.width/2));
+			// 	if (
+			// 		(Math.round(obj2.x + obj2.width) <= Math.round(obj1.x - obj1.width/2) ) ||
+			// 		(Math.round(obj1.x + obj1.width/2 ) <= Math.round(obj2.x) )
+			// 		) {
+			// 		console.log('blocked');
+			// 		obj1.blocked = true;
+			// 	}
+			// }
+
+			if (obj1.type === 'bullet' && obj2.type === 'player') {
+
+				// obj1.destroy();
+				if (obj1.userHash === obj2.hash) {
+					console.log('NO HIT');
+					return false;
+				} else {
+					console.log('hit!!');
+					console.log(obj1.userHash);
+					console.log(obj2.hash);
+					// throw "..";
+					obj2.hit();
+				}
+			}
+		},
+		EndContact: function(obj1, obj2) {
+			obj1.blocked = false;
 		}
 	});
 
-	fixture.shape = new b2PolygonShape();
-	fixture.shape.SetAsBox(meter(width), meter(height));
-
-	var bodyDef = new b2BodyDef();
-	bodyDef.type = b2Body.b2_staticBody;
-	bodyDef.position.x = meter(options.x + width);
-	bodyDef.position.y = meter(options.y + height);
-
-	instance.getBodyDef = function() {
-		return bodyDef;
-	};
-
-	instance.addToWorld = function(world) {
-		this.body = world.CreateBody(bodyDef);
-		this.body.CreateFixture(fixture);
-		this.body.SetUserData(this);
-
-		this.emit('addedtoworld', instance.getPixelPos());
-
-		return this;
-	};
-
-	instance.getPixelPos = function() {
-		return {
-			x: pixel(instance.body.GetWorldCenter().x) - width,
-			y: pixel(instance.body.GetWorldCenter().y) - height
-		};
-	};
-
-	instance.toJson = function() {
-		var pos = this.getPixelPos();
-
-		return {
-			x: pos.x,
-			y: pos.y,
-			width: instance.width,
-			height: instance.height
-		};
-	};
-
-	return instance;
-}
-
-require('./requireable')(module, 'Tile', Tile);
-
-
-});
-
-require.define("/requireable.js",function(require,module,exports,__dirname,__filename,process,global){/*
-This is a hack to make window object available in nodejs
-for easy export of modules client & server side
- */
-module.exports = function(module, name, func) {
-	if (typeof module !== 'undefined' && module.exports) {
-		module.exports = func;
-	}
-
-	if (typeof window !== 'undefined') {
-		window.common = window.common || {};
-		window.common[name] = func;
-	}
-};
+	require('./requireable')(module, 'world', box2dworld);
 
 });
 
@@ -24046,9 +24284,11 @@ require.define("/box2dworld.js",function(require,module,exports,__dirname,__file
 		fixedTimestepAccumulator += dt;
 		lastTimestamp = now;
 
-		// destroyQueue.each(function(body) {
-		// 	world.DestroyBody(body);
-		// });
+		destroyQueue.each(function(body) {
+			world.DestroyBody(body);
+			console.log('body destroyed.. ');
+			console.log('tota body left: ' + actors.length);
+		});
 
 		destroyQueue = [];
 
@@ -24073,7 +24313,7 @@ require.define("/box2dworld.js",function(require,module,exports,__dirname,__file
 		// Box2d vars
 		var
 			instance = new EventEmitter2(),
-			world = new b2World(new b2Vec2(0, 4), false)
+			world = new b2World(new b2Vec2(0, 4), true)
 			;
 
 		map.create(world, screenWidth, screenHeight);
@@ -24123,36 +24363,45 @@ require.define("/box2dworld.js",function(require,module,exports,__dirname,__file
 		};
 
 		instance.addObject = function(actor) {
-			var fixture = new b2FixtureDef();
-			fixture.density = 4;
-			fixture.restitution = 0;
-			fixture.shape = new b2PolygonShape();
-			fixture.shape.SetAsBox(meter(actor.width)/2, meter(actor.height)/2);
-
 			var bodyDef = new b2BodyDef();
 			bodyDef.type = b2Body.b2_dynamicBody;
 			bodyDef.position.x = meter(actor.x);
 			bodyDef.position.y = meter(actor.y);
 
+			if (actor.customBodyDef) {
+				bodyDef = actor.customBodyDef(bodyDef);
+			}
+
 			var obj = world.CreateBody(bodyDef);
-			obj.SetFixedRotation(true);
 
-			fixture = obj.CreateFixture(fixture);
-			actor.applyFixture(fixture);
+			if (actor.customBody) {
+				obj = actor.customBody(obj);
+			}
 
+			actor.customFixtureDef(obj, new b2FixtureDef());
 			actor.setBody(obj);
 
 			obj.SetUserData(actor);  // set the actor as user data of the body so we can use it later: body.GetUserData()
 			actors.push(actor);
 			// objs.push(obj);
-			//
-			//
 		};
 
 		instance.getActorsData = function() {
 			return actors.map(function(actor) {
 				return actor.toRawData();
 			});
+		};
+
+		instance.getActors = function() {
+			return actors;
+		};
+
+		instance.destroyObject = function(actor) {
+			console.log(actor.hash);
+			actors.remove(function(n) {
+				return n.hash === actor.hash;
+			});
+			destroyQueue.push(actor.getBody());
 		};
 
 		instance.setDebug = function(el) {
@@ -24170,12 +24419,54 @@ require.define("/box2dworld.js",function(require,module,exports,__dirname,__file
 		//Do one animation interation and start animating
 		interval = setInterval(function () {
 			update(world);
-
 			instance.emit('tick');
 		}, 1000/FPS);
 
 		return instance;
-	}(SCREEN_WIDTH, SCREEN_HEIGHT);
+	}(SCREEN_WIDTH, SCREEN_HEIGHT)
+	.addContactListener({
+		BeginContact: function(obj1, obj2) {
+			// console.log('hit');
+			// console.log('hit');
+			// console.log('hit');
+			// console.log('hit');
+			// console.log('hit');
+			// if (obj1.type === 'player' && obj2.type === 'tile') {
+			// 	console.log(obj1);
+			// 	// console.log(obj1);
+			// 	// console.log(obj2);
+			// 	// game.debug('obj2:' + Math.round(obj2.x + obj2.width), true);
+			// 	// game.debug('obj1:' + Math.round(obj1.x - obj1.width/2));
+			// 	// game.debug('obj2:' + Math.round(obj2.x), true);
+			// 	// game.debug('obj1:' + Math.round(obj1.x + obj1.width/2));
+			// 	if (
+			// 		(Math.round(obj2.x + obj2.width) <= Math.round(obj1.x - obj1.width/2) ) ||
+			// 		(Math.round(obj1.x + obj1.width/2 ) <= Math.round(obj2.x) )
+			// 		) {
+			// 		console.log('blocked');
+			// 		obj1.blocked = true;
+			// 	}
+			// }
+
+			if (obj1.type === 'bullet' && obj2.type === 'player') {
+
+				// obj1.destroy();
+				if (obj1.userHash === obj2.hash) {
+					console.log('NO HIT');
+					return false;
+				} else {
+					console.log('hit!!');
+					console.log(obj1.userHash);
+					console.log(obj2.hash);
+					// throw "..";
+					obj2.hit();
+				}
+			}
+		},
+		EndContact: function(obj1, obj2) {
+			obj1.blocked = false;
+		}
+	});
 
 	require('./requireable')(module, 'world', box2dworld);
 
@@ -24186,32 +24477,36 @@ require.define("/character.js",function(require,module,exports,__dirname,__filen
 var
 	helpers = require('./helpers'),
 	game = require('./game'),
-	Box2D = require('./libs/box2dweb-2.1a3')
+	Box2D = require('./libs/box2dweb-2.1a3'),
+	EventEmitter2 = require('./libs/eventemitter2').EventEmitter2,
+	helpers = require('./helpers'),
+	meter = helpers.meter
 	;
 
 var b2Vec2 = Box2D.Common.Math.b2Vec2;
-function character(name, color) {
+function character(hash, color) {
 	var
 		width = 20,
 		height = 40,
-		instance = {
-			width: width,
-			height: height,
-			currentStates: [],
-			remainJump: 0,
-			regX: width/2,
-			regY: height/2,
-			vX: 2,
-			vY: 2,
-			canJump: true,
-			bullets: [],
-			type: 'player',
-			blocked: false,
-			snapToPixel: true,
-			health: 100,
-			body: {}
-		}
+		instance = new EventEmitter2()
 		;
+
+	instance.hash = hash;
+	instance.width = width;
+	instance.height = height;
+	instance.currentStates = [];
+	instance.remainJump = 0;
+	instance.regX = width/2;
+	instance.regY = height/2;
+	instance.vX = 2;
+	instance.vY = 2;
+	instance.canJump = true;
+	instance.bullets = [];
+	instance.type = 'player';
+	instance.blocked = false;
+	instance.snapToPixel = true;
+	instance.health = 100;
+	instance.body = {};
 
 	instance.setHealth = function(value) {
 		this.health = value;
@@ -24219,6 +24514,8 @@ function character(name, color) {
 
 	instance.hit = function(object) {
 		this.setHealth(Math.max(this.health - 10, 0));
+
+		this.emit('hit.player', this.health);
 	};
 
 	instance.isGoingTo = function(name) {
@@ -24237,12 +24534,12 @@ function character(name, color) {
 
 	instance.jump = function(force) {
 		if (this.remainJump > 0) {
-			force.y -= 60;
+			force.y -= 100;
 			this.remainJump--;
 		}
 
 		if (this.landed) {
-			this.remainJump = 5;
+			this.remainJump = 3;
 		}
 
 		return force;
@@ -24274,6 +24571,7 @@ function character(name, color) {
 		}
 
 		if (instance.isGoingTo('jump')) {
+			console.log('jump');
 			force = this.jump(force);
 		}
 
@@ -24281,6 +24579,11 @@ function character(name, color) {
 			force,
 			this.body.GetWorldCenter()
 		);
+
+		var pos = this.getPixelPos();
+
+		this.x = Math.round(pos.x);
+		this.y = pos.y;
 
 		this.body.SetLinearVelocity(vel);
 
@@ -24295,6 +24598,8 @@ function character(name, color) {
 	};
 
 	instance.setBody = function(body) {
+		body.SetFixedRotation(true);
+
 		this.body = body;
 	};
 
@@ -24313,34 +24618,11 @@ function character(name, color) {
 		this.addChild(this.aimer.getShape());
 	};
 
-	instance.applyFixture = function(fixture) {
-		var filter = fixture.GetFilterData();
-		filter.categoryBits = game.PLAYER;
-		filter.maskBits = game.BOUNDARY;
-		fixture.SetFilterData(filter);
-
-		this.fixture = fixture;
-	};
-
-	instance.fire = function(targetX, targetY) {
-		// var
-		// 	point = this.globalRegPoint(),
-		// 	self = this
-		// 	;
-
-		// var bullet = game.Bullet(point, targetX, targetY);
-		// game.stage.addChild(bullet);
-
-		// bullet.onDestroy = function() {
-		// 	self.bullets.remove(this);
-		// };
-		// this.bullets.push(bullet);
-	};
-
 	instance.toRawData = function() {
 		var pos = this.getPixelPos();
 
 		return {
+			hash: hash,
 			x: pos.x,
 			y: pos.y,
 			width: width,
@@ -24349,10 +24631,196 @@ function character(name, color) {
 		};
 	};
 
+	instance.customFixtureDef = function(body, fixture) {
+		var b2PolygonShape = Box2D.Collision.Shapes.b2PolygonShape;
+		fixture.density = 4;
+		fixture.restitution = 0;
+		fixture.shape = new b2PolygonShape();
+		fixture.shape.SetAsBox(meter(this.width)/2, meter(this.height)/2);
+
+		bodyFixture = body.CreateFixture(fixture);
+
+		var filter = bodyFixture.GetFilterData();
+		filter.categoryBits = game.PLAYER;
+		filter.maskBits = game.BOUNDARY | game.PLAYER | game.BOULDER;
+		bodyFixture.SetFilterData(filter);
+
+		//add foot sensor fixture
+		var footSensor = new b2PolygonShape();
+		footSensor.SetAsBox(0.3, 0.3, b2Vec2(0,-2), 0);
+		fixture.isSensor = true;
+		var footSensorFixture = bodyFixture.CreateFixture(fixture);
+		footSensorFixture.SetUserData({});
+
+		this.fixture = bodyFixture;
+
+		return fixture;
+	};
+
+	instance.getBody = function() {
+		return this.body;
+	};
+
 	return instance;
 }
+
 require('./requireable')(module, 'character', character);
 
 });
 require("/character.js");
+
+require.define("/bullet.js",function(require,module,exports,__dirname,__filename,process,global){var
+	Box2D = require('./libs/box2dweb-2.1a3'),
+	EventEmitter2 = require('./libs/eventemitter2').EventEmitter2,
+	world = require('./box2dworld'),
+	game = require('./game'),
+	helpers = require('./helpers')
+	;
+
+var b2Vec2 = Box2D.Common.Math.b2Vec2;
+
+var bullet = function(data) {
+	var
+		instance = new EventEmitter2(),
+		width = 4,
+		height = 4
+		;
+	var dx = data.target.x - data.from.x;
+	var dy = data.target.y - data.from.y;
+
+	var radians = Math.atan2(dy, dx);
+
+	instance.userHash = data.userHash;
+	instance.hash = data.hash;
+	instance.vX = 20 * Math.cos(radians);
+	instance.vY = 20 * Math.sin(radians);
+	instance.x = data.from.x;
+	instance.y = data.from.y;
+	instance.width = width;
+	instance.height = height;
+	instance.type = 'bullet';
+	console.log(instance.vX);
+	console.log(instance.vY);
+
+	instance.setBody = function(body) {
+		this.body = body;
+		this.body.SetBullet(true);
+		var force = new b2Vec2(0, 0);
+		force.x = this.vX;
+		force.y = this.vY;
+
+		// console.log(force);
+		// var filter = this.body.GetFilterData();
+		// filter.groupIndex = -1;
+		// this.body.SetFilterData(filter);
+		this.body.ApplyForce(force, this.body.GetWorldCenter());
+	};
+
+	instance.update = function() {
+
+	};
+
+	instance.customFixtureDef = function(body, fixture) {
+		fixture.density = 4;
+		fixture.restitution = 0.2;
+		fixture.shape = new Box2D.Collision.Shapes.b2PolygonShape();
+		fixture.shape.SetAsBox(helpers.meter(this.width)/2, helpers.meter(this.height)/2);
+
+		bodyFixture = body.CreateFixture(fixture);
+
+		var filter = bodyFixture.GetFilterData();
+		filter.categoryBits = game.BULLET;
+		filter.maskBits = game.BOUNDARY | game.PLAYER | game.BOULDER;
+		bodyFixture.SetFilterData(filter);
+
+		this.fixture = bodyFixture;
+
+		return bodyFixture;
+	};
+
+	instance.getBody = function() {
+		return this.body;
+	};
+
+	instance.toRawData = function() {
+		return {
+			hash: this.hash,
+			type: this.type,
+			x: helpers.pixel(this.body.GetWorldCenter().x),
+			y: helpers.pixel(this.body.GetWorldCenter().y)
+		};
+	};
+	instance.destroy = function() {
+		instance.emit('destroy');
+	};
+	// console.log(instance);
+
+	return instance;
+};
+
+
+require('./requireable')(module, 'bullet', bullet);
+
+
+});
+require("/bullet.js");
+
+require.define("/boulder.js",function(require,module,exports,__dirname,__filename,process,global){var
+	EventEmitter2 = require('./libs/eventemitter2').EventEmitter2,
+	Box2D = require('./libs/box2dweb-2.1a3'),
+	helpers = require('./helpers'),
+	meter = helpers.meter,
+	game = require('./game')
+	;
+
+var boulder = function(options) {
+	var instance = new EventEmitter2();
+	console.log(options);
+	instance.type = 'boulder';
+	instance.hash = options.hash;
+	instance.x = options.x;
+	instance.y = options.y;
+	instance.vX = 2;
+	instance.vY = 2;
+	instance.width = options.width;
+
+	instance.customFixtureDef = function(body, fixture) {
+		fixture.density = 4;
+		fixture.restitution = 0;
+		fixture.shape = new Box2D.Collision.Shapes.b2CircleShape(meter(options.width));
+
+		bodyFixture = body.CreateFixture(fixture);
+
+		var filter = bodyFixture.GetFilterData();
+		filter.categoryBits = game.PLAYER;
+		filter.maskBits = game.BOUNDARY | game.PLAYER | game.BOULDER | game.BULLET;
+		console.log(filter);
+		bodyFixture.SetFilterData(filter);
+		this.fixture = bodyFixture;
+		return fixture;
+	};
+
+	instance.setBody = function(body) {
+		this.body = body;
+	};
+
+	instance.toRawData = function() {
+		return {
+			hash: this.hash,
+			type: this.type,
+			x: helpers.pixel(this.body.GetWorldCenter().x),
+			y: helpers.pixel(this.body.GetWorldCenter().y),
+			width: this.width
+		};
+	};
+
+	instance.update = function() {};
+
+	return instance;
+};
+
+require('./requireable')(module, 'boulder', boulder);
+
+});
+require("/boulder.js");
 })();

@@ -40,9 +40,11 @@
 		fixedTimestepAccumulator += dt;
 		lastTimestamp = now;
 
-		// destroyQueue.each(function(body) {
-		// 	world.DestroyBody(body);
-		// });
+		destroyQueue.each(function(body) {
+			world.DestroyBody(body);
+			console.log('body destroyed.. ');
+			console.log('tota body left: ' + actors.length);
+		});
 
 		destroyQueue = [];
 
@@ -67,7 +69,7 @@
 		// Box2d vars
 		var
 			instance = new EventEmitter2(),
-			world = new b2World(new b2Vec2(0, 4), false)
+			world = new b2World(new b2Vec2(0, 4), true)
 			;
 
 		map.create(world, screenWidth, screenHeight);
@@ -117,36 +119,45 @@
 		};
 
 		instance.addObject = function(actor) {
-			var fixture = new b2FixtureDef();
-			fixture.density = 4;
-			fixture.restitution = 0;
-			fixture.shape = new b2PolygonShape();
-			fixture.shape.SetAsBox(meter(actor.width)/2, meter(actor.height)/2);
-
 			var bodyDef = new b2BodyDef();
 			bodyDef.type = b2Body.b2_dynamicBody;
 			bodyDef.position.x = meter(actor.x);
 			bodyDef.position.y = meter(actor.y);
 
+			if (actor.customBodyDef) {
+				bodyDef = actor.customBodyDef(bodyDef);
+			}
+
 			var obj = world.CreateBody(bodyDef);
-			obj.SetFixedRotation(true);
 
-			fixture = obj.CreateFixture(fixture);
-			actor.applyFixture(fixture);
+			if (actor.customBody) {
+				obj = actor.customBody(obj);
+			}
 
+			actor.customFixtureDef(obj, new b2FixtureDef());
 			actor.setBody(obj);
 
 			obj.SetUserData(actor);  // set the actor as user data of the body so we can use it later: body.GetUserData()
 			actors.push(actor);
 			// objs.push(obj);
-			//
-			//
 		};
 
 		instance.getActorsData = function() {
 			return actors.map(function(actor) {
 				return actor.toRawData();
 			});
+		};
+
+		instance.getActors = function() {
+			return actors;
+		};
+
+		instance.destroyObject = function(actor) {
+			console.log(actor.hash);
+			actors.remove(function(n) {
+				return n.hash === actor.hash;
+			});
+			destroyQueue.push(actor.getBody());
 		};
 
 		instance.setDebug = function(el) {
@@ -164,11 +175,53 @@
 		//Do one animation interation and start animating
 		interval = setInterval(function () {
 			update(world);
-
 			instance.emit('tick');
 		}, 1000/FPS);
 
 		return instance;
-	}(SCREEN_WIDTH, SCREEN_HEIGHT);
+	}(SCREEN_WIDTH, SCREEN_HEIGHT)
+	.addContactListener({
+		BeginContact: function(obj1, obj2) {
+			// console.log('hit');
+			// console.log('hit');
+			// console.log('hit');
+			// console.log('hit');
+			// console.log('hit');
+			// if (obj1.type === 'player' && obj2.type === 'tile') {
+			// 	console.log(obj1);
+			// 	// console.log(obj1);
+			// 	// console.log(obj2);
+			// 	// game.debug('obj2:' + Math.round(obj2.x + obj2.width), true);
+			// 	// game.debug('obj1:' + Math.round(obj1.x - obj1.width/2));
+			// 	// game.debug('obj2:' + Math.round(obj2.x), true);
+			// 	// game.debug('obj1:' + Math.round(obj1.x + obj1.width/2));
+			// 	if (
+			// 		(Math.round(obj2.x + obj2.width) <= Math.round(obj1.x - obj1.width/2) ) ||
+			// 		(Math.round(obj1.x + obj1.width/2 ) <= Math.round(obj2.x) )
+			// 		) {
+			// 		console.log('blocked');
+			// 		obj1.blocked = true;
+			// 	}
+			// }
+
+			if (obj1.type === 'bullet' && obj2.type === 'player') {
+
+				// obj1.destroy();
+				if (obj1.userHash === obj2.hash) {
+					console.log('NO HIT');
+					return false;
+				} else {
+					console.log('hit!!');
+					console.log(obj1.userHash);
+					console.log(obj2.hash);
+					// throw "..";
+					obj2.hit();
+				}
+			}
+		},
+		EndContact: function(obj1, obj2) {
+			obj1.blocked = false;
+		}
+	});
 
 	require('./requireable')(module, 'world', box2dworld);

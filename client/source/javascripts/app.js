@@ -9,6 +9,7 @@
 	// }
 
 	var app = {
+		keystate: window.common.keystate(),
 		socket: {},
 		ready: function() {
 			this.socket = io.connect("http://localhost:8001");

@@ -2,32 +2,36 @@
 var
 	helpers = require('./helpers'),
 	game = require('./game'),
-	Box2D = require('./libs/box2dweb-2.1a3')
+	Box2D = require('./libs/box2dweb-2.1a3'),
+	EventEmitter2 = require('./libs/eventemitter2').EventEmitter2,
+	helpers = require('./helpers'),
+	meter = helpers.meter
 	;
 
 var b2Vec2 = Box2D.Common.Math.b2Vec2;
-function character(name, color) {
+function character(hash, color) {
 	var
 		width = 20,
 		height = 40,
-		instance = {
-			width: width,
-			height: height,
-			currentStates: [],
-			remainJump: 0,
-			regX: width/2,
-			regY: height/2,
-			vX: 2,
-			vY: 2,
-			canJump: true,
-			bullets: [],
-			type: 'player',
-			blocked: false,
-			snapToPixel: true,
-			health: 100,
-			body: {}
-		}
+		instance = new EventEmitter2()
 		;
+
+	instance.hash = hash;
+	instance.width = width;
+	instance.height = height;
+	instance.currentStates = [];
+	instance.remainJump = 0;
+	instance.regX = width/2;
+	instance.regY = height/2;
+	instance.vX = 2;
+	instance.vY = 2;
+	instance.canJump = true;
+	instance.bullets = [];
+	instance.type = 'player';
+	instance.blocked = false;
+	instance.snapToPixel = true;
+	instance.health = 100;
+	instance.body = {};
 
 	instance.setHealth = function(value) {
 		this.health = value;
@@ -35,6 +39,8 @@ function character(name, color) {
 
 	instance.hit = function(object) {
 		this.setHealth(Math.max(this.health - 10, 0));
+
+		this.emit('hit.player', this.health);
 	};
 
 	instance.isGoingTo = function(name) {
@@ -53,12 +59,12 @@ function character(name, color) {
 
 	instance.jump = function(force) {
 		if (this.remainJump > 0) {
-			force.y -= 60;
+			force.y -= 100;
 			this.remainJump--;
 		}
 
 		if (this.landed) {
-			this.remainJump = 5;
+			this.remainJump = 3;
 		}
 
 		return force;
@@ -90,6 +96,7 @@ function character(name, color) {
 		}
 
 		if (instance.isGoingTo('jump')) {
+			console.log('jump');
 			force = this.jump(force);
 		}
 
@@ -97,6 +104,11 @@ function character(name, color) {
 			force,
 			this.body.GetWorldCenter()
 		);
+
+		var pos = this.getPixelPos();
+
+		this.x = Math.round(pos.x);
+		this.y = pos.y;
 
 		this.body.SetLinearVelocity(vel);
 
@@ -111,6 +123,8 @@ function character(name, color) {
 	};
 
 	instance.setBody = function(body) {
+		body.SetFixedRotation(true);
+
 		this.body = body;
 	};
 
@@ -129,34 +143,11 @@ function character(name, color) {
 		this.addChild(this.aimer.getShape());
 	};
 
-	instance.applyFixture = function(fixture) {
-		var filter = fixture.GetFilterData();
-		filter.categoryBits = game.PLAYER;
-		filter.maskBits = game.BOUNDARY;
-		fixture.SetFilterData(filter);
-
-		this.fixture = fixture;
-	};
-
-	instance.fire = function(targetX, targetY) {
-		// var
-		// 	point = this.globalRegPoint(),
-		// 	self = this
-		// 	;
-
-		// var bullet = game.Bullet(point, targetX, targetY);
-		// game.stage.addChild(bullet);
-
-		// bullet.onDestroy = function() {
-		// 	self.bullets.remove(this);
-		// };
-		// this.bullets.push(bullet);
-	};
-
 	instance.toRawData = function() {
 		var pos = this.getPixelPos();
 
 		return {
+			hash: hash,
 			x: pos.x,
 			y: pos.y,
 			width: width,
@@ -165,6 +156,37 @@ function character(name, color) {
 		};
 	};
 
+	instance.customFixtureDef = function(body, fixture) {
+		var b2PolygonShape = Box2D.Collision.Shapes.b2PolygonShape;
+		fixture.density = 4;
+		fixture.restitution = 0;
+		fixture.shape = new b2PolygonShape();
+		fixture.shape.SetAsBox(meter(this.width)/2, meter(this.height)/2);
+
+		bodyFixture = body.CreateFixture(fixture);
+
+		var filter = bodyFixture.GetFilterData();
+		filter.categoryBits = game.PLAYER;
+		filter.maskBits = game.BOUNDARY | game.PLAYER | game.BOULDER;
+		bodyFixture.SetFilterData(filter);
+
+		//add foot sensor fixture
+		var footSensor = new b2PolygonShape();
+		footSensor.SetAsBox(0.3, 0.3, b2Vec2(0,-2), 0);
+		fixture.isSensor = true;
+		var footSensorFixture = bodyFixture.CreateFixture(fixture);
+		footSensorFixture.SetUserData(this);
+
+		this.fixture = bodyFixture;
+
+		return fixture;
+	};
+
+	instance.getBody = function() {
+		return this.body;
+	};
+
 	return instance;
 }
+
 require('./requireable')(module, 'character', character);
