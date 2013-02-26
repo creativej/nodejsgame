@@ -12582,7 +12582,7 @@ require.define("/game.js",function(require,module,exports,__dirname,__filename,p
 		PLAYER: 0x0002,
 		BULLET: 0x0004,
 		BOULDER: 0x0008,
-		ALL: 0x00010
+		PLAYER_FEET: 0x0010
 	});
 
 
@@ -24633,6 +24633,8 @@ function character(hash, color) {
 
 	instance.customFixtureDef = function(body, fixture) {
 		var b2PolygonShape = Box2D.Collision.Shapes.b2PolygonShape;
+		var b2FixtureDef = Box2D.Dynamics.b2FixtureDef;
+
 		fixture.density = 4;
 		fixture.restitution = 0;
 		fixture.shape = new b2PolygonShape();
@@ -24646,11 +24648,17 @@ function character(hash, color) {
 		bodyFixture.SetFilterData(filter);
 
 		//add foot sensor fixture
-		var footSensor = new b2PolygonShape();
-		footSensor.SetAsBox(0.3, 0.3, b2Vec2(0,-2), 0);
-		fixture.isSensor = true;
-		var footSensorFixture = bodyFixture.CreateFixture(fixture);
-		footSensorFixture.SetUserData({});
+		var footSensor = new b2FixtureDef();
+		footSensor.shape = new b2PolygonShape();
+		footSensor.shape.SetAsOrientedBox(meter(7), meter(4), new b2Vec2(meter(width/4-5), meter(height/2)), 0);
+		console.log(footSensor.shape);
+		console.log(footSensor);
+		footSensor.isSensor = true;
+		footSensor.filter.categoryBits = game.FEET;
+		footSensor.filter.maskBits = game.BOUNDARY | game.PLAYER | game.BOULDER;
+
+		var footSensorFixture = body.CreateFixture(footSensor);
+		footSensorFixture.SetUserData(this);
 
 		this.fixture = bodyFixture;
 
