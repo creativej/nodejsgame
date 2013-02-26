@@ -12,7 +12,8 @@
 		keystate: window.common.keystate(),
 		socket: {},
 		ready: function() {
-			this.socket = io.connect("http://localhost:8001");
+			this.socket = io.connect("http://" + $('.game').data('site') + ":8001");
+
 			console.log('app is ready');
 
 			this.socket.on('populate.room', function(userlist) {
